@@ -3,7 +3,7 @@
 
 # Variable settings
 CXXFLAGS=-Wall -Wextra 
-SOURCES_GEN=src/dummy.cpp
+SOURCES_GEN=src/cpp/dummy.cpp
 # Source and object lists for main program
 SOURCES_MAIN=$(SOURCES_GEN) src/cpp/main.cpp
 OBJECTS_MAIN=$(SOURCES_MAIN:.cpp=.o)
@@ -42,4 +42,4 @@ main-test: $(OBJECTS_TEST)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-rm -fr $(OBJECTS_MAIN) $(OBJECTS_TEST)
+	rm -fr $(OBJECTS_MAIN) $(OBJECTS_TEST)
