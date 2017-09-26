@@ -29,7 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cpp\PA193_test_parser_NEM.cpp">
+    <ClCompile Include="src\cpp\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

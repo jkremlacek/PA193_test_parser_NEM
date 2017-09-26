@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/jkremlacek/PA193_test_parser_NEM.svg?branch=startup)](https://travis-ci.org/jkremlacek/PA193_test_parser_NEM)
