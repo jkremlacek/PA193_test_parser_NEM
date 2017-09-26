@@ -1,0 +1,15 @@
+version: 1.0.{build}
+configuration:
+- Release
+- Debug
+build:
+  project: PA193_test_parser_NEM.sln
+  parallel: true
+  verbosity: minimal
+test:
+  assemblies:
+    - '**\*.tests.dll'
+artifacts:
+- path: $(configuration)\PA193_test_parser_NEM.exe
+  name: Binary
+deploy: off
