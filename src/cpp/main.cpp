@@ -8,10 +8,9 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	cout << "Hello World" << endl;
 
-	int i;
-
-	cin >> i;
-
 	return 0;
 }
 
+int testReturnOne() {
+	return 2;
+}
