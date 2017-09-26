@@ -8,8 +8,11 @@
 #include "targetver.h"
 
 #include <stdio.h>
+
+#ifdef WIN32
 #include <tchar.h>
-
-
+#else
+typedef char TCHAR;
+#endif
 
 // TODO: reference additional headers your program requires here
