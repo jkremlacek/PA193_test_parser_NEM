@@ -20,3 +20,7 @@ int _tmain(int argc, TCHAR* argv[])
 	return 0;
 }
 
+int main(int argc, TCHAR* argv[]) {
+	return _tmain(argc, argv);
+}
+
