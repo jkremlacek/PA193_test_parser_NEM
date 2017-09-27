@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 
 #define CATCH_CONFIG_MAIN
