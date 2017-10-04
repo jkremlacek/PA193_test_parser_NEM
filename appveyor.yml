@@ -10,7 +10,6 @@ test:
   assemblies:
     - '.\Release\tests.dll'
 after_test:
-	- vstest.console /logger:Appveyor .\Release\tests.dll
 artifacts:
 - path: $(configuration)\PA193_test_parser_NEM.exe
   name: Binary
