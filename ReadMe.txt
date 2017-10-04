@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/6672liyd72iedlet/branch/development?svg=true)](https://ci.appveyor.com/project/jkremlacek/pa193-test-parser-nem/branch/development)
+https://ci.appveyor.com/api/projects/status/github/jkremlacek/pa193-test-parser-nem?branch=development&svg=true
 
 NEM Cryptocurrency block parser project
 
