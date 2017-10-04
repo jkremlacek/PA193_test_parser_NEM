@@ -1,7 +1,6 @@
 version: 1.0.{build}
 configuration:
 - Release
-- Debug
 build:
   project: PA193_test_parser_NEM.sln
   parallel: true
@@ -10,7 +9,7 @@ test:
   assemblies:
     - '.\*\tests.dll'
 after_test:
-  - vstest.console /logger:Appveyor **\tests.dll
+  - vstest.console /logger:Appveyor Release\tests.dll
 artifacts:
 - path: $(configuration)\PA193_test_parser_NEM.exe
   name: Binary
