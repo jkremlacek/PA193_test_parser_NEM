@@ -12,5 +12,5 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 
 int testReturnOne() {
-	return 2;
+	return 1;
 }
