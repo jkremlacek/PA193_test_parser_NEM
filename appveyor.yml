@@ -8,7 +8,7 @@ build:
   verbosity: minimal
 test:
   assemblies:
-    - '**\*tests.dll'
+    - 'C:\projects\pa193-test-parser-nem\Release\tests.dll'
 artifacts:
 - path: $(configuration)\PA193_test_parser_NEM.exe
   name: Binary
