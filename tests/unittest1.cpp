@@ -14,7 +14,7 @@ namespace tests
 		TEST_METHOD(TestMethod1)
 		{
 			// TODO: Your test code here
-			Assert::AreEqual(2, testReturnOne());
+			Assert::AreEqual(1, testReturnOne());
 		}
 
 	};
