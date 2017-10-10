@@ -2,6 +2,8 @@ version: 1.0.{build}
 configuration:
 - Release
 image: Visual Studio 2017
+before_build:
+  - ps: $Env:PLATFORM_TOOLSET="v141"
 build:
   project: PA193_test_parser_NEM.sln
   parallel: true
