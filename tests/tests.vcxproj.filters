@@ -35,5 +35,8 @@
     <ClCompile Include="VerifyBlockAttributesUnitTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClCompile Include="JsonSerializerUnitTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
