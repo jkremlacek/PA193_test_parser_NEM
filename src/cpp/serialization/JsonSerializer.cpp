@@ -36,15 +36,16 @@ JsonObject JsonSerializer::fromString(string& str) {
 
 		removeWhitespacesFromBothSides(str);
 
-		int endPos;
 		int otherBracketPos;
+		string value;
 
 		switch (str[0])
 		{
 		case '"':
-			endPos = str.find_first_of("\"");
-			type = JsonObjectType::LEAF;
+			
+			str.erase(0, 1);
 
+			loadLeafObjectValue();
 			//TODO handle leaf object type
 
 			break;
@@ -91,6 +92,19 @@ int JsonSerializer::getOtherBracketPos(const char leftBracket, const char rightB
 {
 	//TODO
 	return 0;
+}
+
+JsonObject JsonSerializer::loadLeafObjectValue(JsonObject& parent, string name, string& str)
+{
+	JsonObject jso = JsonObject(JsonObjectType::LEAF);
+	int endPos = str.find_first_of("\"");
+
+	jso.setData(str.substr(endPos));
+	parent.addSubObject(name, jso);
+
+	str.erase(0, jso.getData().lenght());
+
+	return jso;
 }
 
 

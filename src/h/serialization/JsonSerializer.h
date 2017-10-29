@@ -23,5 +23,8 @@ public:
 	string removeWhitespacesFromBothSides(string& str);
 
 	int getOtherBracketPos(const char leftBracket, const char rightBracket, string& str);
+
+	JsonObject loadLeafObjectValue(JsonObject& parent, string name, string & str);
+
 };
 
