@@ -5,6 +5,8 @@ JsonObject JsonSerializer::fromJSONFile(char* filename) {
 }
 
 JsonObject JsonSerializer::fromString(string& str) {
+	JsonObject jso = createJsonObject();
+
 	removeWhitespacesFromBothSides(str);
 
 	if (str[0] != '{')
@@ -22,31 +24,27 @@ JsonObject JsonSerializer::fromString(string& str) {
 
 	while (str.length() != 0)
 	{
-		string jsonObjectName;
-		JsonObjectType type;
-
-		removeWhitespacesFromBothSides(str);
-
-		int separatorPos = str.find_first_of(':');
-
-		jsonObjectName = str.substr(separatorPos);
-
-		//TODO:check that : is erased
-		str.erase(0, jsonObjectName.length() + 1);
+		string jsonAttributeName = getJsonAttributeName(str);
 
 		removeWhitespacesFromBothSides(str);
 
 		int otherBracketPos;
-		string value;
+		int textContentEndPos;
 
 		switch (str[0])
 		{
 		case '"':
-			
 			str.erase(0, 1);
 
-			loadLeafObjectValue();
-			//TODO handle leaf object type
+			textContentEndPos = str.find_first_of("\'");
+			if (textContentEndPos == string::npos)
+			{
+				throw new exception("Invalid format, missing '\"'");
+			}
+
+			jso.addAttribute(JsonAttribute(STRING, str.substr(textContentEndPos)));
+
+			str.erase(0, textContentEndPos);
 
 			break;
 		case '[':
@@ -55,14 +53,12 @@ JsonObject JsonSerializer::fromString(string& str) {
 			//use counter = 1 of {}, for every { +1 and for every } -1, do this untill counter = 0, because that is our } otherwise throw exception
 			otherBracketPos = getOtherBracketPos('[', ']', str);
 
-			type = JsonObjectType::NODE;
 			break;
 		case '{':
 			//TODO single
 			//count { before first } then ignore } that many times and then get position of next one } (care for repeating of { again)
 			otherBracketPos = getOtherBracketPos('{', '}', str);
 			
-			type = JsonObjectType::NODE;
 			break;
 		default:
 			throw new exception(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
@@ -71,6 +67,27 @@ JsonObject JsonSerializer::fromString(string& str) {
 
 		//TODO
 	}
+
+	return jso;
+}
+
+string JsonSerializer::getJsonAttributeName(string & str)
+{
+	removeWhitespacesFromBothSides(str);
+
+	int separatorPos = str.find_first_of(':');
+
+	if (separatorPos == string::npos)
+	{
+		throw new exception("Invalid format, missing ':'");
+	}
+
+	string jsonAttributeName = str.substr(separatorPos);
+
+	//TODO:check that : is erased
+	str.erase(0, jsonAttributeName.length() + 1);
+
+	return jsonAttributeName;
 }
 
 string JsonSerializer::loadStringFromFile(const char* filename) {
@@ -94,17 +111,28 @@ int JsonSerializer::getOtherBracketPos(const char leftBracket, const char rightB
 	return 0;
 }
 
-JsonObject JsonSerializer::loadLeafObjectValue(JsonObject& parent, string name, string& str)
+JsonObject JsonSerializer::createJsonObject()
 {
-	JsonObject jso = JsonObject(JsonObjectType::LEAF);
-	int endPos = str.find_first_of("\"");
+	double id = iteratorCounter;
+	iteratorCounter++;
 
-	jso.setData(str.substr(endPos));
-	parent.addSubObject(name, jso);
+	JsonObject jo(id);
 
-	str.erase(0, jso.getData().lenght());
+	jsObjectStorage.insert(pair<double, JsonObject>(id, jo));
 
-	return jso;
+	return JsonObject(iteratorCounter);
+}
+
+JsonObject JsonSerializer::getJsonObjectWithId(double id)
+{
+	map<double, JsonObject>::iterator it = jsObjectStorage.find(id);
+
+	if (it == jsObjectStorage.end())
+	{
+		throw new exception("Object not found within the storage.");
+	}
+
+	return it->second;
 }
 
 

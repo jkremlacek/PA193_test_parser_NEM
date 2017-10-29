@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../src/h/serialization/JsonAttribute.h"
+#include "../src/cpp/serialization/JsonAttribute.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -55,14 +55,14 @@ namespace tests
 		TEST_METHOD(addJsonValueArrayTest) {
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
-			attrObj.addJsonValue(JsonObject());
+			attrObj.addJsonValue(1L);
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 1);
 		}
 
 		TEST_METHOD(addJsonValueSingleObjectTest) {
 			JsonAttribute attrObj = JsonAttribute(SINGLE_OBJECT, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
-			attrObj.addJsonValue(JsonObject());
+			attrObj.addJsonValue(1L);
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 1);
 		}
 
@@ -70,18 +70,18 @@ namespace tests
 			JsonAttribute stringObj = JsonAttribute(STRING, "text");
 			Assert::ExpectException<std::exception>([&]
 			{
-				stringObj.addJsonValue(JsonObject());
+				stringObj.addJsonValue(1L);
 			});
 		}
 
 		TEST_METHOD(addJsonValuesSingleObjectTest) {
 			JsonAttribute attrObj = JsonAttribute(SINGLE_OBJECT, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
-			attrObj.addJsonValue(JsonObject());
+			attrObj.addJsonValue(1L);
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 1);
 			Assert::ExpectException<std::exception>([&]
 			{
-				attrObj.addJsonValue(JsonObject());
+				attrObj.addJsonValue(1L);
 			});
 		}		
 	};

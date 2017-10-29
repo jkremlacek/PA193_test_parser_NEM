@@ -3,11 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "JsonObject.h"
-
 using namespace std;
 
-enum JsonAttributeType {STRING, ARRAY, SINGLE_OBJECT};
+enum JsonAttributeType { STRING, ARRAY, SINGLE_OBJECT };
 
 class JsonAttribute
 {
@@ -16,11 +14,9 @@ private:
 
 	string name;
 	string textValue;
-	vector<JsonObject> jsonValues;
+	vector<double> jsonValues;
 public:
-	JsonAttribute(JsonAttributeType jat, string name) : jat(jat), name(name) {
-		if (name.length() == 0) throw new exception("Json attribute name cannot be empty.");
-	}
+	JsonAttribute(JsonAttributeType jat, string name);
 
 	const string getName();
 	const JsonAttributeType getType();
@@ -28,8 +24,8 @@ public:
 	void setTextValue(string text);
 	const string getTextValue();
 
-	void addJsonValue(JsonObject jo);
-	const JsonObject getJsonValueAt(int i);
+	void addJsonValue(double joId);
+	double getJsonValueAt(int i);
 	int getJsonObjectCount();
 };
 

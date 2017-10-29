@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "..\src\h\serialization\JsonObject.h"
+#include "../src/cpp/serialization/JsonObject.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,7 +12,7 @@ namespace tests
 	TEST_CLASS(JsonObjectUnitTest) {
 	public:
 		TEST_METHOD(getAttributeWithIdTest) {
-			JsonObject nodeObj = JsonObject();
+			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
 			nodeObj.addAttribute(attrObj);
@@ -20,7 +20,7 @@ namespace tests
 		}
 
 		TEST_METHOD(getAttributeWithIdMissingTest) {
-			JsonObject nodeObj = JsonObject();
+			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
 			nodeObj.addAttribute(attrObj);
@@ -31,7 +31,7 @@ namespace tests
 		}
 
 		TEST_METHOD(getAttributeCountTest) {
-			JsonObject nodeObj = JsonObject();
+			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
 			Assert::IsTrue(nodeObj.getAttributeCount() == 0);
