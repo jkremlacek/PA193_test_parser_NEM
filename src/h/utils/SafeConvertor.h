@@ -18,6 +18,12 @@ public:
 	static int toInt(double num);
 
 	/*
+	converts double value to long only if no precision loss occurs,
+	otherwise runtime_error is thrown
+	*/
+	static long long toLong(double num);
+
+	/*
 		converts double value to time_t only if no precision loss occurs,
 		otherwise runtime_error is thrown
 	*/
