@@ -35,5 +35,7 @@ public:
 	JsonObject createJsonObject();
 
 	JsonObject getJsonObjectWithId(double id);
+
+	JsonAttribute getJsonStringAttribute(string& str, string name);
 };
 

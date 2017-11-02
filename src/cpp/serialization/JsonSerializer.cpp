@@ -34,18 +34,7 @@ JsonObject JsonSerializer::fromString(string& str) {
 		switch (str[0])
 		{
 		case '"':
-			str.erase(0, 1);
-
-			textContentEndPos = str.find_first_of("\'");
-			if (textContentEndPos == string::npos)
-			{
-				throw new exception("Invalid format, missing '\"'");
-			}
-
-			jso.addAttribute(JsonAttribute(STRING, str.substr(textContentEndPos)));
-
-			str.erase(0, textContentEndPos);
-
+			jso.addAttribute(getJsonStringAttribute(str, jsonAttributeName));
 			break;
 		case '[':
 			//TODO multiple object
@@ -82,7 +71,7 @@ string JsonSerializer::getJsonAttributeName(string & str)
 		throw new exception("Invalid format, missing ':'");
 	}
 
-	string jsonAttributeName = str.substr(separatorPos);
+	string jsonAttributeName = str.substr(0, separatorPos);
 
 	//TODO:check that : is erased
 	str.erase(0, jsonAttributeName.length() + 1);
@@ -135,4 +124,33 @@ JsonObject JsonSerializer::getJsonObjectWithId(double id)
 	return it->second;
 }
 
+JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
+{
+	//note that str must start with the " symbol starting the attribute value
+	str.erase(0, 1);
+
+	int endPos = str.find_first_of("\"");
+	if (endPos == string::npos)
+	{
+		throw new exception("Invalid format, missing '\"'");
+	}
+
+	JsonAttribute ja = JsonAttribute(STRING, name);
+	ja.setTextValue(str.substr(0, endPos));
+
+	str.erase(0, endPos + 1);
+	removeWhitespacesFromBothSides(str);
+
+	if (str.length() != 0)
+	{
+		if (str[0] != ',')
+		{
+			throw new exception("Invalid format, missing '\,'");
+		}
+		
+		str.erase(0, 1);
+	}
+
+	return ja;
+}
 

@@ -12,17 +12,17 @@ namespace tests
 	TEST_CLASS(JsonAttributeUnitTest) {
 	public:
 
-		TEST_METHOD(nameGSTest) {
+		TEST_METHOD(nameGS_Test) {
 			Assert::IsTrue("test" == JsonAttribute(STRING, "test").getName());
 		}
 
-		TEST_METHOD(typeGSTest)	{
+		TEST_METHOD(typeGS_Test)	{
 			Assert::IsTrue(STRING == JsonAttribute(STRING, "test").getType());
 			Assert::IsTrue(ARRAY == JsonAttribute(ARRAY, "test").getType());
 			Assert::IsTrue(SINGLE_OBJECT == JsonAttribute(SINGLE_OBJECT, "test").getType());
 		}
 
-		TEST_METHOD(getSetTextValueArrayTest)	{
+		TEST_METHOD(getSetTextValue_Array_Test)	{
 			JsonAttribute arrayAttr = JsonAttribute(ARRAY, "test");
 			Assert::ExpectException<std::exception>([&]
 			{
@@ -34,7 +34,7 @@ namespace tests
 			});
 		}
 
-		TEST_METHOD(getSetTextValueSingleObjectTest) {
+		TEST_METHOD(getSetTextValue_SingleObject_Test) {
 			JsonAttribute arrayAttr = JsonAttribute(SINGLE_OBJECT, "test");
 			Assert::ExpectException<std::exception>([&]
 			{
@@ -46,27 +46,27 @@ namespace tests
 			});
 		}
 
-		TEST_METHOD(getSetDataStringTest) {
+		TEST_METHOD(getSetData_String_Test) {
 			JsonAttribute stringObj = JsonAttribute(STRING, "test");
 			stringObj.setTextValue("testLeaf");
 			Assert::IsTrue(stringObj.getTextValue() == "testLeaf");
 		}
 
-		TEST_METHOD(addJsonValueArrayTest) {
+		TEST_METHOD(addJsonValue_Array_Test) {
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
 			attrObj.addJsonValue(1L);
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 1);
 		}
 
-		TEST_METHOD(addJsonValueSingleObjectTest) {
+		TEST_METHOD(addJsonValue_SingleObject_Test) {
 			JsonAttribute attrObj = JsonAttribute(SINGLE_OBJECT, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
 			attrObj.addJsonValue(1L);
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 1);
 		}
 
-		TEST_METHOD(addJsonValueStringTest) {
+		TEST_METHOD(addJsonValue_String_Test) {
 			JsonAttribute stringObj = JsonAttribute(STRING, "text");
 			Assert::ExpectException<std::exception>([&]
 			{
@@ -74,7 +74,7 @@ namespace tests
 			});
 		}
 
-		TEST_METHOD(addJsonValuesSingleObjectTest) {
+		TEST_METHOD(addJsonValues_SingleObject_Test) {
 			JsonAttribute attrObj = JsonAttribute(SINGLE_OBJECT, "testAttr");
 			Assert::IsTrue(attrObj.getJsonObjectCount() == 0);
 			attrObj.addJsonValue(1L);

@@ -11,7 +11,7 @@ namespace tests
 {
 	TEST_CLASS(JsonObjectUnitTest) {
 	public:
-		TEST_METHOD(getAttributeWithIdTest) {
+		TEST_METHOD(getAttributeWithId_Test) {
 			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
@@ -19,7 +19,7 @@ namespace tests
 			Assert::IsTrue(nodeObj.getAttributeWithId("testAttr").getType() == JsonAttributeType::ARRAY);
 		}
 
-		TEST_METHOD(getAttributeWithIdMissingTest) {
+		TEST_METHOD(getAttributeWithId_Missing_Test) {
 			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
@@ -30,13 +30,25 @@ namespace tests
 			});
 		}
 
-		TEST_METHOD(getAttributeCountTest) {
+		TEST_METHOD(getAttributeCount_Test) {
 			JsonObject nodeObj = JsonObject(1L);
 			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
 
 			Assert::IsTrue(nodeObj.getAttributeCount() == 0);
 			nodeObj.addAttribute(attrObj);
 			Assert::IsTrue(nodeObj.getAttributeCount() == 1);
+		}
+
+		TEST_METHOD(getAttributeCount_MultipleAttr_Test) {
+			JsonObject nodeObj = JsonObject(1L);
+			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
+			JsonAttribute attrObj2 = JsonAttribute(ARRAY, "testAttr2");
+
+			Assert::IsTrue(nodeObj.getAttributeCount() == 0);
+			nodeObj.addAttribute(attrObj);
+			Assert::IsTrue(nodeObj.getAttributeCount() == 1);
+			nodeObj.addAttribute(attrObj2);
+			Assert::IsTrue(nodeObj.getAttributeCount() == 2);
 		}
 	};
 }
