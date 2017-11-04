@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
 #include <streambuf>
 #include <string>
 #include <map>
@@ -47,5 +48,7 @@ public:
 	string getBracketSubstring(string& str, BracketType bt, bool eraseFromStr = false);
 
 	string getNumberSubstring(string& str);
+
+	string getErrorStrSegment(string& str);
 };
 

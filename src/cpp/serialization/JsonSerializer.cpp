@@ -12,7 +12,19 @@ JsonSerializer::~JsonSerializer()
 }
 
 JsonObject* JsonSerializer::fromJSONFile(char* filename) {
-	return fromString(loadStringFromFile(filename)).second;
+	JsonObject* jo;
+	
+	try
+	{
+		jo = fromString(loadStringFromFile(filename)).second;
+	}
+	catch (const std::exception& e)
+	{
+		cerr << e.what() << endl;
+		return nullptr;
+	}
+
+	return jo;
 }
 
 pair<double,JsonObject*> JsonSerializer::fromString(string& str) {
@@ -23,13 +35,13 @@ pair<double,JsonObject*> JsonSerializer::fromString(string& str) {
 
 	if (str[0] != '{')
 	{
-		throw runtime_error("Invalid format, missing '{' bracket.");
+		throw runtime_error("Invalid format, missing '{' bracket, " + getErrorStrSegment(str));
 	}
 
 	str.erase(0, 1);
 
 	if (str[str.length() - 1] != '}') {
-		throw runtime_error("Invalid format, missing '}' bracket.");
+		throw runtime_error("Invalid format, missing '}' bracket, " + getErrorStrSegment(str));
 	}
 
 	str.erase(str.length() - 1, 1);
@@ -65,7 +77,7 @@ pair<double,JsonObject*> JsonSerializer::fromString(string& str) {
 				jso->addAttribute(JsonAttribute::createNumAttribute(getNumberSubstring(str), jsonAttributeName));
 			}
 			else {
-				throw runtime_error(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
+				throw runtime_error(string("Invalid format, expected one of: \", [, {, " + getErrorStrSegment(str)).c_str());
 				break;
 			}
 			
@@ -83,7 +95,7 @@ string JsonSerializer::getJsonAttributeName(string & str)
 
 	if (separatorPos == string::npos)
 	{
-		throw runtime_error("Invalid format, missing ':'");
+		throw runtime_error("Invalid format, missing ':', " + getErrorStrSegment(str));
 	}
 
 	string jsonAttributeName = str.substr(0, separatorPos);
@@ -141,7 +153,7 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	int endPos = str.find_first_of("\"");
 	if (endPos == string::npos)
 	{
-		throw runtime_error("Invalid format, missing '\"'");
+		throw runtime_error("Invalid format, missing '\"', " + getErrorStrSegment(str));
 	}
 
 	JsonAttribute ja(STRING, name);
@@ -154,7 +166,7 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	{
 		if (str[0] != ',')
 		{
-			throw runtime_error("Invalid format, missing ','");
+			throw runtime_error("Invalid format, missing ',', " + getErrorStrSegment(str));
 		}
 		
 		str.erase(0, 1);
@@ -201,7 +213,7 @@ JsonAttribute JsonSerializer::getJsonArrayObjAttribute(string & str, string name
 		{
 			if (substr[0] != ',')
 			{
-				throw runtime_error("Invalid format, missing ','");
+				throw runtime_error("Invalid format, missing ',', " + getErrorStrSegment(str));
 			}
 
 			substr.erase(0, 1);
@@ -230,7 +242,7 @@ string JsonSerializer::getBracketSubstring(string & str, BracketType bt, bool er
 
 	if (str[0] != leftBracket)
 	{
-		throw runtime_error("Unexpected bracket type: " + str[0]);
+		throw runtime_error("Unexpected bracket type: " + str.substr(0,1) + ", " + getErrorStrSegment(str));
 	}
 
 	int semaphore = 1;
@@ -267,5 +279,10 @@ string JsonSerializer::getNumberSubstring(string & str)
 	string substr = str.substr(0, str.find_first_not_of(".0123456789"));
 	str.erase(0, substr.length() + 1);
 	return substr;
+}
+
+string JsonSerializer::getErrorStrSegment(string & str)
+{
+	return string("instead got : \"" + str.substr(0, 1) + "\" in ..." + str.substr(0, 20) + "...");
 }
 

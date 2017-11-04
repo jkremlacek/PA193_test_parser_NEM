@@ -187,6 +187,8 @@ namespace tests
 			JsonSerializer jss = JsonSerializer();
 			
 			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block.json");
+
+			Assert::IsNotNull(root);
 		}
 	};
 }
