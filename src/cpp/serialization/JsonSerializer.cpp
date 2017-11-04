@@ -11,7 +11,7 @@ JsonSerializer::~JsonSerializer()
 	}
 }
 
-JsonObject* JsonSerializer::fromJSONFile(char* filename) {
+JsonObject* JsonSerializer::fromJSONFile(const char* filename) {
 	JsonObject* jo;
 	
 	try

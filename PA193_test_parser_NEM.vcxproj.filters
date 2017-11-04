@@ -48,10 +48,10 @@
     <ClInclude Include="src\h\serialization\JsonObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cpp\main.h">
+    <ClInclude Include="src\h\serialization\JsonAttribute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\h\serialization\JsonAttribute.h">
+    <ClInclude Include="src\h\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

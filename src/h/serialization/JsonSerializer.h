@@ -23,7 +23,7 @@ private:
 public:
 	~JsonSerializer();
 
-	JsonObject* fromJSONFile(char* filename);
+	JsonObject* fromJSONFile(const char* filename);
 
 	pair<double, JsonObject*> fromString(string& str);
 
