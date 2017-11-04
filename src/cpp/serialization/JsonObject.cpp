@@ -1,7 +1,9 @@
 #include "..\..\h\serialization\JsonObject.h"
 
 void JsonObject::addAttribute(JsonAttribute attr) {
-	this->attributes.insert(std::pair<string, JsonAttribute>(attr.getName(), attr));
+	if ((this->attributes.insert(std::pair<string, JsonAttribute>(attr.getName(), attr))).second == false) {
+		throw runtime_error(string("Duplicate attribute: " + attr.getName()).c_str());
+	}
 }
 
 JsonAttribute JsonObject::getAttributeWithId(string id) {
@@ -12,7 +14,7 @@ JsonAttribute JsonObject::getAttributeWithId(string id) {
 		return this->attributes.find(id)->second;
 	}
 
-	throw exception(("Object with id: " + id + " was not found.").c_str());
+	throw runtime_error(("Object with id: " + id + " was not found.").c_str());
 }
 
 int JsonObject::getAttributeCount() {

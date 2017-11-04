@@ -1,23 +1,35 @@
 #include "..\..\h\serialization\JsonSerializer.h"
 
-JsonObject JsonSerializer::fromJSONFile(char* filename) {
-	return fromString(loadStringFromFile(filename));
+JsonSerializer::~JsonSerializer()
+{
+	for (
+		map<double, JsonObject*>::iterator it = jsObjectStorage.begin();
+		it != jsObjectStorage.end();
+		it++)
+	{
+		delete(it->second);
+	}
 }
 
-JsonObject JsonSerializer::fromString(string& str) {
-	JsonObject jso = createJsonObject();
+JsonObject* JsonSerializer::fromJSONFile(char* filename) {
+	return fromString(loadStringFromFile(filename)).second;
+}
+
+pair<double,JsonObject*> JsonSerializer::fromString(string& str) {
+	pair<double, JsonObject*> pdj = createJsonObject();
+	JsonObject* jso = pdj.second;
 
 	removeWhitespacesFromBothSides(str);
 
 	if (str[0] != '{')
 	{
-		throw new exception("Invalid format, missing '{' bracket.");
+		throw runtime_error("Invalid format, missing '{' bracket.");
 	}
 
 	str.erase(0, 1);
 
 	if (str[str.length() - 1] != '}') {
-		throw new exception("Invalid format, missing '}' bracket.");
+		throw runtime_error("Invalid format, missing '}' bracket.");
 	}
 
 	str.erase(str.length() - 1, 1);
@@ -28,36 +40,24 @@ JsonObject JsonSerializer::fromString(string& str) {
 
 		removeWhitespacesFromBothSides(str);
 
-		int otherBracketPos;
-		int textContentEndPos;
-
 		switch (str[0])
 		{
 		case '"':
-			jso.addAttribute(getJsonStringAttribute(str, jsonAttributeName));
+			jso->addAttribute(getJsonStringAttribute(str, jsonAttributeName));
 			break;
 		case '[':
-			//TODO multiple object
-			//count [ before first ] then ignore ] that many times and then get position of next one ] (care for repeating of [ again)
-			//use counter = 1 of {}, for every { +1 and for every } -1, do this untill counter = 0, because that is our } otherwise throw exception
-			otherBracketPos = getOtherBracketPos('[', ']', str);
-
+			jso->addAttribute(getJsonArrayObjAttribute(getBracketSubstring(str, SQUARE), jsonAttributeName));
 			break;
 		case '{':
-			//TODO single
-			//count { before first } then ignore } that many times and then get position of next one } (care for repeating of { again)
-			otherBracketPos = getOtherBracketPos('{', '}', str);
-			
+			jso->addAttribute(getJsonSingleObjAttribute(getBracketSubstring(str, CURLY), jsonAttributeName));
 			break;
 		default:
-			throw new exception(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
+			throw runtime_error(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
 			break;
 		}
-
-		//TODO
 	}
 
-	return jso;
+	return pdj;
 }
 
 string JsonSerializer::getJsonAttributeName(string & str)
@@ -68,7 +68,7 @@ string JsonSerializer::getJsonAttributeName(string & str)
 
 	if (separatorPos == string::npos)
 	{
-		throw new exception("Invalid format, missing ':'");
+		throw runtime_error("Invalid format, missing ':'");
 	}
 
 	string jsonAttributeName = str.substr(0, separatorPos);
@@ -94,31 +94,25 @@ string JsonSerializer::removeWhitespacesFromBothSides(string& str) {
 	return str;
 }
 
-int JsonSerializer::getOtherBracketPos(const char leftBracket, const char rightBracket, string & str)
-{
-	//TODO
-	return 0;
-}
-
-JsonObject JsonSerializer::createJsonObject()
+pair<double, JsonObject*> JsonSerializer::createJsonObject()
 {
 	double id = iteratorCounter;
 	iteratorCounter++;
 
-	JsonObject jo(id);
+	JsonObject* jo = new JsonObject(id);
 
-	jsObjectStorage.insert(pair<double, JsonObject>(id, jo));
+	jsObjectStorage.insert(pair<double, JsonObject*>(id, jo));
 
-	return JsonObject(iteratorCounter);
+	return pair<double, JsonObject*>(id, jo);
 }
 
-JsonObject JsonSerializer::getJsonObjectWithId(double id)
+JsonObject* JsonSerializer::getJsonObjectWithId(double id)
 {
-	map<double, JsonObject>::iterator it = jsObjectStorage.find(id);
+	map<double, JsonObject*>::iterator it = jsObjectStorage.find(id);
 
 	if (it == jsObjectStorage.end())
 	{
-		throw new exception("Object not found within the storage.");
+		throw new runtime_error("Object not found within the storage.");
 	}
 
 	return it->second;
@@ -132,10 +126,10 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	int endPos = str.find_first_of("\"");
 	if (endPos == string::npos)
 	{
-		throw new exception("Invalid format, missing '\"'");
+		throw runtime_error("Invalid format, missing '\"'");
 	}
 
-	JsonAttribute ja = JsonAttribute(STRING, name);
+	JsonAttribute ja(STRING, name);
 	ja.setTextValue(str.substr(0, endPos));
 
 	str.erase(0, endPos + 1);
@@ -145,12 +139,104 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	{
 		if (str[0] != ',')
 		{
-			throw new exception("Invalid format, missing '\,'");
+			throw runtime_error("Invalid format, missing '\,'");
 		}
 		
 		str.erase(0, 1);
 	}
 
 	return ja;
+}
+
+JsonAttribute JsonSerializer::getJsonSingleObjAttribute(string & str, string name)
+{
+	JsonAttribute ja(SINGLE_OBJECT, name);
+	string substr = getBracketSubstring(str, CURLY);
+
+	str.erase(0, substr.length() + 1);
+
+	ja.addJsonValue(fromString(substr).first);
+
+	return ja;
+}
+
+JsonAttribute JsonSerializer::getJsonArrayObjAttribute(string & str, string name)
+{
+	JsonAttribute ja(ARRAY, name);
+
+	string substr = getBracketSubstring(str, SQUARE);
+	
+	str.erase(0, substr.length() + 1);
+
+	substr.erase(0, 1);
+	substr.erase(substr.length() - 1, 1);
+
+	while (substr.length() != 0)
+	{
+		removeWhitespacesFromBothSides(substr);
+
+		string joStr = getBracketSubstring(substr, CURLY);
+		substr.erase(0, joStr.length());
+
+		ja.addJsonValue(fromString(joStr).first);
+
+		removeWhitespacesFromBothSides(substr);
+
+		if (substr.length() != 0)
+		{
+			if (substr[0] != ',')
+			{
+				throw runtime_error("Invalid format, missing ','");
+			}
+
+			substr.erase(0, 1);
+		}
+	}
+
+	return ja;
+}
+
+string JsonSerializer::getBracketSubstring(string & str, BracketType bt)
+{
+	const char leftBracket = 
+		bt == CURLY ? '{': 
+		bt == SQUARE ? '[':
+		'\0';
+
+	const char rightBracket =
+		bt == CURLY ? '}' :
+		bt == SQUARE ? ']' :
+		'\0';
+
+	if (leftBracket == '\0' || rightBracket == '\0')
+	{
+		throw runtime_error("Undefined BracketType.");
+	}
+
+	if (str[0] != leftBracket)
+	{
+		throw runtime_error("Unexpected bracket type: " + str[0]);
+	}
+
+	int semaphore = 1;
+
+	for (unsigned int i = 1; i < str.length(); i++)
+	{
+		if (str[i] == leftBracket)
+		{
+			semaphore++;
+		}
+		else if (str[i] == rightBracket) 
+		{
+			semaphore--;
+			
+			if (semaphore == 0)
+			{
+				return str.substr(0, i + 1);
+			}
+		}
+	} 
+
+	throw runtime_error("Other bracket not found.");
 }
 

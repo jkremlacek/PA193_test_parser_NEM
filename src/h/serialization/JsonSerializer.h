@@ -9,18 +9,22 @@
 
 using namespace std;
 
+enum BracketType{CURLY, SQUARE};
+
 class JsonSerializer
 {
 private:
 	const string WHITESPACES = " \t\n\r\f\v";
 
-	map<double, JsonObject> jsObjectStorage;
+	map<double, JsonObject*> jsObjectStorage;
 	double iteratorCounter = 0L;
 	
 public:
-	JsonObject fromJSONFile(char* filename);
+	~JsonSerializer();
 
-	JsonObject fromString(string& str);
+	JsonObject* fromJSONFile(char* filename);
+
+	pair<double, JsonObject*> fromString(string& str);
 
 	//TODO: test
 	string getJsonAttributeName(string& str);
@@ -30,12 +34,16 @@ public:
 	//source: http://www.cplusplus.com/forum/beginner/50209/
 	string removeWhitespacesFromBothSides(string& str);
 
-	int getOtherBracketPos(const char leftBracket, const char rightBracket, string& str);
+	pair<double, JsonObject*> createJsonObject();
 
-	JsonObject createJsonObject();
-
-	JsonObject getJsonObjectWithId(double id);
+	JsonObject* getJsonObjectWithId(double id);
 
 	JsonAttribute getJsonStringAttribute(string& str, string name);
+
+	JsonAttribute getJsonSingleObjAttribute(string& str, string name);
+
+	JsonAttribute getJsonArrayObjAttribute(string& str, string name);
+
+	string getBracketSubstring(string& str, BracketType bt);
 };
 
