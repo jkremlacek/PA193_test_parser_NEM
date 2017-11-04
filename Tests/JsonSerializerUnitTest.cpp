@@ -158,5 +158,35 @@ namespace tests
 			Assert::AreEqual("subObjAttr2", jss.getJsonObjectWithId(newId1)->getAttributeWithId("subObjAttr2").getName().c_str());
 			Assert::AreEqual("subObjAttr3", jss.getJsonObjectWithId(newId1)->getAttributeWithId("subObjAttr3").getName().c_str());
 		}
+
+		TEST_METHOD(fromString_singleAttribute_Number_Test) {
+			string str = "{testName:1000.1001}";
+
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* jo = jss.fromString(str).second;
+
+			Assert::AreEqual(1, jo->getAttributeCount());
+			Assert::AreEqual("testName", jo->getAttributeWithId("testName").getName().c_str());
+			Assert::AreEqual(1000.1001, jo->getAttributeWithId("testName").getNumValue());
+		}
+
+		TEST_METHOD(fromString_singleAttribute_Bool_Test) {
+			string str = "{testName:true}";
+
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* jo = jss.fromString(str).second;
+
+			Assert::AreEqual(1, jo->getAttributeCount());
+			Assert::AreEqual("testName", jo->getAttributeWithId("testName").getName().c_str());
+			Assert::AreEqual(true, jo->getAttributeWithId("testName").getBoolValue());
+		}
+
+		TEST_METHOD(fromJSONFile_Test) {
+			JsonSerializer jss = JsonSerializer();
+			
+			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block.json");
+		}
 	};
 }

@@ -44,6 +44,8 @@ public:
 
 	JsonAttribute getJsonArrayObjAttribute(string& str, string name);
 
-	string getBracketSubstring(string& str, BracketType bt);
+	string getBracketSubstring(string& str, BracketType bt, bool eraseFromStr = false);
+
+	string getNumberSubstring(string& str);
 };
 

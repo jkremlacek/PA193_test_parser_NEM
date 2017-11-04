@@ -46,14 +46,29 @@ pair<double,JsonObject*> JsonSerializer::fromString(string& str) {
 			jso->addAttribute(getJsonStringAttribute(str, jsonAttributeName));
 			break;
 		case '[':
-			jso->addAttribute(getJsonArrayObjAttribute(getBracketSubstring(str, SQUARE), jsonAttributeName));
+			jso->addAttribute(getJsonArrayObjAttribute(getBracketSubstring(str, SQUARE, true), jsonAttributeName));
 			break;
 		case '{':
-			jso->addAttribute(getJsonSingleObjAttribute(getBracketSubstring(str, CURLY), jsonAttributeName));
+			jso->addAttribute(getJsonSingleObjAttribute(getBracketSubstring(str, CURLY, true), jsonAttributeName));
 			break;
 		default:
-			throw runtime_error(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
-			break;
+			if (str.substr(0,4) == "true")
+			{
+				jso->addAttribute(JsonAttribute::createBoolAttribute(str.substr(0, 4), jsonAttributeName));
+				str.erase(0, 4);
+			}
+			else if (str.substr(0, 5) == "false") {
+				jso->addAttribute(JsonAttribute::createBoolAttribute(str.substr(0, 5), jsonAttributeName));
+				str.erase(0, 5);
+			}
+			else if (str.substr(0,1).find_first_of(".0123456789") != string::npos) {
+				jso->addAttribute(JsonAttribute::createNumAttribute(getNumberSubstring(str), jsonAttributeName));
+			}
+			else {
+				throw runtime_error(string("Invalid format, expected one of: \", [, {, instead got: \"" + str.substr(1) + "\" in ..." + str.substr(20) + "...").c_str());
+				break;
+			}
+			
 		}
 	}
 
@@ -139,7 +154,7 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	{
 		if (str[0] != ',')
 		{
-			throw runtime_error("Invalid format, missing '\,'");
+			throw runtime_error("Invalid format, missing ','");
 		}
 		
 		str.erase(0, 1);
@@ -196,11 +211,11 @@ JsonAttribute JsonSerializer::getJsonArrayObjAttribute(string & str, string name
 	return ja;
 }
 
-string JsonSerializer::getBracketSubstring(string & str, BracketType bt)
+string JsonSerializer::getBracketSubstring(string & str, BracketType bt, bool eraseFromStr)
 {
-	const char leftBracket = 
-		bt == CURLY ? '{': 
-		bt == SQUARE ? '[':
+	const char leftBracket =
+		bt == CURLY ? '{' :
+		bt == SQUARE ? '[' :
 		'\0';
 
 	const char rightBracket =
@@ -226,17 +241,31 @@ string JsonSerializer::getBracketSubstring(string & str, BracketType bt)
 		{
 			semaphore++;
 		}
-		else if (str[i] == rightBracket) 
+		else if (str[i] == rightBracket)
 		{
 			semaphore--;
-			
+
 			if (semaphore == 0)
 			{
-				return str.substr(0, i + 1);
+				string substr = str.substr(0, i + 1);
+
+				if (eraseFromStr)
+				{
+					str.erase(0, substr.length() + 1);
+				}
+				
+				return substr;
 			}
 		}
-	} 
+	}
 
 	throw runtime_error("Other bracket not found.");
+}
+
+string JsonSerializer::getNumberSubstring(string & str)
+{
+	string substr = str.substr(0, str.find_first_not_of(".0123456789"));
+	str.erase(0, substr.length() + 1);
+	return substr;
 }
 
