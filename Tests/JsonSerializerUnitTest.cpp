@@ -189,6 +189,109 @@ namespace tests
 			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block.json");
 
 			Assert::IsNotNull(root);
+			Assert::AreEqual(8, root->getAttributeCount());
+			Assert::AreEqual(79545139.0, root->getAttributeWithId("timeStamp").getNumValue());
+			Assert::AreEqual(
+				"d2470a1b145aff0ab6fb6869ce2d44894eaaddbf534424f8b0b2432c4799237510216195423843c50b84600458752e53b83c6310ee2347d681b98c32bbcacd00", 
+				root->getAttributeWithId("signature").getTextValue().c_str());
+
+			JsonObject* dataJO = jss.getJsonObjectWithId(root->getAttributeWithId("prevBlockHash").getJsonValueAt(0));
+
+			Assert::AreEqual(
+				"4b767ff3b59921c4c7f83a12757178e28d7a986ac9a3ccf64a01a4fc937430ce",
+				dataJO->getAttributeWithId("data").getTextValue().c_str()
+			);
+			Assert::AreEqual(1.0, root->getAttributeWithId("type").getNumValue());
+
+			JsonObject* transactionJO_0 = 
+				jss.getJsonObjectWithId(root->getAttributeWithId("transactions").getJsonValueAt(0));
+			JsonObject* transactionJO_1 =
+				jss.getJsonObjectWithId(root->getAttributeWithId("transactions").getJsonValueAt(1));
+			JsonObject* transactionJO_2 =
+				jss.getJsonObjectWithId(root->getAttributeWithId("transactions").getJsonValueAt(2));
+
+			checkTransaction(
+				transactionJO_0,
+				jss,
+				79545121,
+				35000000,
+				"5fea0d4572f91f52cc2474fe6e78332d39c02296a1fe2f589c463165eb538f4a2c67a793f28f70cbe11bc7b1580ba23418bcbdf36fe29d2d9f4802b3e6f87c00",
+				6250000,
+				"NAWY52S4MBWST5JDXDSA4BDDF5GR2CJZ3IZ2DUX7",
+				257,
+				79552321,
+				"4437313032653437346432326262303161",
+				1,
+				1744830465,
+				"2f69c71a7cd584e5f92ff787fb1d68aab53985c577eff6e9061c15768899433c"
+			);
+
+			checkTransaction(
+				transactionJO_1,
+				jss,
+				79545087,
+				50010000000,
+				"91ee593cd316c7898ab9e04fa5e62919844927774540732f375474645febf3391dc41c3ad504f94b44e762c86baba1dd5b5d2de15097ad391800f0761ffbf001",
+				300000,
+				"ND2JRPQIWXHKAA26INVGA7SREEUMX5QAI6VU7HNR",
+				257,
+				79631487,
+				"64653735326233646266386634306264396632",
+				1,
+				1744830465,
+				"fdc6620a8626b4505c49dddc32aa8fcfde3d977b452af0e7e146e536a2a9e9c2"
+			);
+
+			checkTransaction(
+				transactionJO_2,
+				jss,
+				79545111,
+				296000000,
+				"21552a9629ed44ea1096a6d7201f940c7b2d9adb12f7481cbc8c18cd144b652aa4c87b889f981924b5774f9096a90fd2e8d9e421e1931f49429cdf43dc1fb50b",
+				150000,
+				"NB4I2PVIBZEJGKRVHHVIGTN2PK5MY4A5MCYIIWZD",
+				257,
+				79548711,
+				"4e6f64652072657761726473207061796f75743a20726f756e6420323539332d32353936",
+				1,
+				1744830466,
+				"d96366cdd47325e816ff86039a6477ef42772a455023ccddae4a0bd5d27b8d23",
+				true,
+				0
+			);
+
+			Assert::AreEqual(1744830465.0, root->getAttributeWithId("version").getNumValue());
+			Assert::AreEqual("be1f88671d9b7444250938a6c9dcdd575692de604e0df9bdb8e6d397fa759c07", root->getAttributeWithId("signer").getTextValue().c_str());
+			Assert::AreEqual(1313679.0, root->getAttributeWithId("height").getNumValue());
+		}
+
+		void checkTransaction(
+			JsonObject* transactionObject, JsonSerializer& jss, double timeStamp, double amount, string signature, double fee, 
+			string recipient, double type, double deadline, string message_payload,
+			double message_type, double version, string signer, bool mosaics = false, int mosaicsCount = 0
+		) 
+		{
+			Assert::AreEqual(timeStamp, transactionObject->getAttributeWithId("timeStamp").getNumValue());
+			Assert::AreEqual(amount, transactionObject->getAttributeWithId("amount").getNumValue());
+			Assert::AreEqual(signature, transactionObject->getAttributeWithId("signature").getTextValue());
+			Assert::AreEqual(fee, transactionObject->getAttributeWithId("fee").getNumValue());
+			Assert::AreEqual(recipient, transactionObject->getAttributeWithId("recipient").getTextValue());
+
+			if (mosaics)
+			{
+				Assert::AreEqual(mosaicsCount, transactionObject->getAttributeWithId("mosaics").getJsonObjectCount());
+			}
+
+			Assert::AreEqual(type, transactionObject->getAttributeWithId("type").getNumValue());
+			Assert::AreEqual(deadline, transactionObject->getAttributeWithId("deadline").getNumValue());
+
+			JsonObject* message = jss.getJsonObjectWithId(transactionObject->getAttributeWithId("message").getJsonValueAt(0));
+
+			Assert::AreEqual(message_payload, message->getAttributeWithId("payload").getTextValue());
+			Assert::AreEqual(message_type, message->getAttributeWithId("type").getNumValue());
+
+			Assert::AreEqual(version, transactionObject->getAttributeWithId("version").getNumValue());
+			Assert::AreEqual(signer, transactionObject->getAttributeWithId("signer").getTextValue());
 		}
 	};
 }
