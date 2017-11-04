@@ -55,7 +55,7 @@ namespace tests
 		}
 
 		TEST_METHOD(fromString_singleAttribute_Test) {
-			string str = "{testName:\"testValue\"}";
+			string str = "{\"testName\":\"testValue\"}";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -67,7 +67,7 @@ namespace tests
 		}
 
 		TEST_METHOD(fromString_twoAttributes_Test) {
-			string str = "{testName:\"testValue\", testName2:\"testValue2\"}";
+			string str = "{\"testName\":\"testValue\", \"testName2\":\"testValue2\"}";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -119,7 +119,7 @@ namespace tests
 		}
 
 		TEST_METHOD(getJsonSingleObjAttribute_Test) {
-			string str = "{subObjAttr:\"subObjVal\"}, otherAttr:\"otherVal\"";
+			string str = "{\"subObjAttr\":\"subObjVal\"}, \"otherAttr\":\"otherVal\"";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -131,7 +131,7 @@ namespace tests
 		}
 
 		TEST_METHOD(getJsonArrayObjAttribute_Single_Test) {
-			string str = "[{subObjAttr:\"subObjVal\"}], otherAttr:\"otherVal\"";
+			string str = "[{\"subObjAttr\":\"subObjVal\"}], \"otherAttr\":\"otherVal\"";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -143,7 +143,7 @@ namespace tests
 		}
 
 		TEST_METHOD(getJsonArrayObjAttribute_Multiple_Test) {
-			string str = "[{subObjAttr:\"subObjVal\"} \n, {subObjAttr2:\"subObjVal2\",subObjAttr3:\"subObjVal3\"}], otherAttr:\"otherVal\"";
+			string str = "[{\"subObjAttr\":\"subObjVal\"} \n, {\"subObjAttr2\":\"subObjVal2\",\"subObjAttr3\":\"subObjVal3\"}], \"otherAttr\":\"otherVal\"";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -160,7 +160,7 @@ namespace tests
 		}
 
 		TEST_METHOD(fromString_singleAttribute_Number_Test) {
-			string str = "{testName:1000.1001}";
+			string str = "{\"testName\":1000.1001}";
 
 			JsonSerializer jss = JsonSerializer();
 
@@ -172,7 +172,7 @@ namespace tests
 		}
 
 		TEST_METHOD(fromString_singleAttribute_Bool_Test) {
-			string str = "{testName:true}";
+			string str = "{\"testName\":true}";
 
 			JsonSerializer jss = JsonSerializer();
 

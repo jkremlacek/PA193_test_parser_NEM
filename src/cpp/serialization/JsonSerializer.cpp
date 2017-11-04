@@ -100,8 +100,12 @@ string JsonSerializer::getJsonAttributeName(string & str)
 
 	string jsonAttributeName = str.substr(0, separatorPos);
 
-	//TODO:check that : is erased
 	str.erase(0, jsonAttributeName.length() + 1);
+
+	removeWhitespacesFromBothSides(jsonAttributeName);
+
+	jsonAttributeName.erase(0, 1);
+	jsonAttributeName.erase(jsonAttributeName.length() - 1, 1);
 
 	return jsonAttributeName;
 }
