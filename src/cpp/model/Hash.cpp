@@ -1,8 +1,9 @@
 #include "..\..\h\model\Hash.h"
 
 
-Hash::Hash()
+Hash::Hash(string data)
 {
+	this->data = data;
 }
 
 

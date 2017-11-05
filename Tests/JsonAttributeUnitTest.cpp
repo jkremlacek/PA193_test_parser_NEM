@@ -4,6 +4,7 @@
 #include "CppUnitTest.h"
 
 #include "../src/cpp/serialization/JsonAttribute.cpp"
+#include "../src/cpp/model/Block.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

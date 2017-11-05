@@ -1,14 +1,56 @@
 #include "../../h/model/Block.h"
 
-#include <list>
-
 Block::Block()
 {
 }
 
-
 Block::~Block()
 {
+}
+
+bool Block::setVersion(double version)
+{
+	return false;
+}
+
+bool Block::setTimestamp(double timestamp)
+{
+	return false;
+}
+
+bool Block::setHarversterKey(Key key)
+{
+	return false;
+}
+
+bool Block::setSignature(Signature signature)
+{
+	return false;
+}
+
+bool Block::setPrevBlockHash(Hash hash)
+{
+	return false;
+}
+
+bool Block::setGenerationHash(Hash hash)
+{
+	return false;
+}
+
+bool Block::setType(double type)
+{
+	return false;
+}
+
+bool Block::setHeight(double height)
+{
+	return false;
+}
+
+bool Block::addTransaction(Transaction transaction)
+{
+	return false;
 }
 
 bool Block::isValid() {

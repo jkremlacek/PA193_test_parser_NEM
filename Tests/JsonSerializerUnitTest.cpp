@@ -4,6 +4,12 @@
 #include "CppUnitTest.h"
 
 #include "../src/cpp/serialization/JsonSerializer.cpp"
+#include "../src/cpp/model/Transaction.cpp"
+#include "../src/cpp/model/Key.cpp"
+#include "../src/cpp/model/Signature.cpp"
+#include "../src/cpp/model/Hash.cpp"
+
+using namespace std;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -293,5 +299,7 @@ namespace tests
 			Assert::AreEqual(version, transactionObject->getAttributeWithId("version").getNumValue());
 			Assert::AreEqual(signer, transactionObject->getAttributeWithId("signer").getTextValue());
 		}
+
+		//TODO: loadBlock_Test once implementation is complete
 	};
 }

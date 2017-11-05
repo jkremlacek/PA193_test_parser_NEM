@@ -1,8 +1,9 @@
 #include "../../h/model/Key.h"
 
 
-Key::Key()
+Key::Key(string hash)
 {
+	this->hash = hash;
 }
 
 

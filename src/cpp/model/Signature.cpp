@@ -1,8 +1,9 @@
 #include "..\..\h\model\Signature.h"
 
 
-Signature::Signature()
+Signature::Signature(string hash)
 {
+	this->hash = hash;
 }
 
 

@@ -7,6 +7,7 @@
 #include <map>
 
 #include "JsonObject.h"
+#include "../model/Block.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ private:
 	
 public:
 	~JsonSerializer();
+
+	Block loadBlock(const char* filename);
 
 	JsonObject* fromJSONFile(const char* filename);
 
