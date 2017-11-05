@@ -75,7 +75,7 @@ Block JsonSerializer::loadBlock(const char * filename)
 			throw runtime_error("Loading " + to_string(i) + ". transaction deadline failed");
 		}
 
-		try
+		if (transactionJO->containsAttributeWithId("message"))
 		{
 			JsonObject* message = getJsonObjectWithId(transactionJO->getAttributeWithId("message").getJsonValueAt(0));
 
@@ -86,10 +86,6 @@ Block JsonSerializer::loadBlock(const char * filename)
 			if (t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
 				throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
 			}
-		}
-		catch (const std::exception&)
-		{
-			//message not found - not mandatory
 		}
 
 		if (t.setVersion(transactionJO->getAttributeWithId("version").getNumValue())) {

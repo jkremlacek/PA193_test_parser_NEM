@@ -21,5 +21,7 @@ public:
 	JsonAttribute getAttributeWithId(string id);
 
 	int getAttributeCount();
+
+	bool containsAttributeWithId(string id);
 };
 

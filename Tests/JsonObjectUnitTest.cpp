@@ -50,5 +50,14 @@ namespace tests
 			nodeObj.addAttribute(attrObj2);
 			Assert::IsTrue(nodeObj.getAttributeCount() == 2);
 		}
+
+		TEST_METHOD(containsAttributeWithId_Test) {
+			JsonObject nodeObj = JsonObject(1L);
+			JsonAttribute attrObj = JsonAttribute(ARRAY, "testAttr");
+
+			Assert::AreEqual(false, nodeObj.containsAttributeWithId("testAttr"));
+			nodeObj.addAttribute(attrObj);
+			Assert::AreEqual(true, nodeObj.containsAttributeWithId("testAttr"));
+		}
 	};
 }

@@ -20,3 +20,10 @@ JsonAttribute JsonObject::getAttributeWithId(string id) {
 int JsonObject::getAttributeCount() {
 	return this->attributes.size();
 }
+
+bool JsonObject::containsAttributeWithId(string id)
+{
+	map<string, JsonAttribute>::iterator it = this->attributes.find(id);
+
+	return it != this->attributes.end();
+}
