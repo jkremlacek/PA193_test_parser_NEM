@@ -15,6 +15,11 @@ Block JsonSerializer::loadBlock(const char * filename)
 {
 	JsonObject* root = fromJSONFile(filename);
 
+	if (root->getAttributeCount() != 8)
+	{
+		throw runtime_error("Invalid attribute count in block object");
+	}
+
 	Block b = Block();
 
 	if (b.setTimestamp(root->getAttributeWithId("timeStamp").getNumValue())) {
@@ -43,6 +48,11 @@ Block JsonSerializer::loadBlock(const char * filename)
 	{
 		JsonObject* transactionJO = getJsonObjectWithId(transactions.getJsonValueAt(i));
 
+		if (root->getAttributeCount() != 10 && (root->getAttributeCount() != 11))
+		{
+			throw runtime_error("Invalid attribute count in transaction object");
+		}
+
 		Transaction t;
 
 		if (t.setTimestamp(transactionJO->getAttributeWithId("timeStamp").getNumValue())) {
@@ -65,6 +75,10 @@ Block JsonSerializer::loadBlock(const char * filename)
 			throw runtime_error("Loading " + to_string(i) + ". transaction recipient failed");
 		}
 
+		if (!transactionJO->containsAttributeWithId("mosaics") && transactionJO->getAttributeCount() == 11)
+		{
+			throw runtime_error("Loading " + to_string(i) + ". transaction failed, missing mosaics argument");
+		}
 		//TODO: mosaics
 
 		if (t.setType(transactionJO->getAttributeWithId("type").getNumValue())) {
@@ -86,6 +100,9 @@ Block JsonSerializer::loadBlock(const char * filename)
 			if (t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
 				throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
 			}
+		}
+		else {
+			throw runtime_error("Loading " + to_string(i) + ". transaction message failed");
 		}
 
 		if (t.setVersion(transactionJO->getAttributeWithId("version").getNumValue())) {
