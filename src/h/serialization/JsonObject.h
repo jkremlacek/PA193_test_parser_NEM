@@ -6,7 +6,10 @@
 #include "JsonAttribute.h"
 
 using namespace std;
-
+/*
+	Represents JSON data structure encapsulated with curly brackets,
+	contains map of named attributes
+*/
 class JsonObject
 {
 private:
