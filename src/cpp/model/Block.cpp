@@ -99,7 +99,7 @@ bool Block::isValid() {
 
 	return
 		//TODO: define which block versions are allowed
-		this->version == 1 &&
+		//this->version == 1 &&
 		//TODO: validate timestamp
 		this->harvesterKey.isValid() &&
 		this->signature.isValid() &&

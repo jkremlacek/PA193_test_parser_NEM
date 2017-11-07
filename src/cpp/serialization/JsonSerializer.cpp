@@ -82,7 +82,7 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 			throw runtime_error("Loading " + to_string(i) + ". transaction deadline failed");
 		}
 
-		if (!transactionJO->containsAttributeWithId("message"))
+		if (transactionJO->containsAttributeWithId("message"))
 		{
 			JsonObject* message = getJsonObjectWithId(transactionJO->getAttributeWithId("message").getJsonValueAt(0));
 

@@ -305,7 +305,7 @@ namespace tests
 
 			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block.json");
 
-			//Block b = jss.loadBlock(root);
+			Block b = jss.loadBlock(root);
 
 			//TODO: run isValid() once implemented
 		}
