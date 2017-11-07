@@ -36,10 +36,31 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (jo == nullptr)
 	{
+		cout << "-----------------" << endl;
+		cerr << "Json file is invalid." << endl;
 		return 1;
 	}
 
-	//TODO: deserialize json object to app models
+	try
+	{
+		Block b = jss.loadBlock(jo);
+		
+		if (b.isValid())
+		{
+			cout << "Block is valid." << endl;
+		}
+		else {
+			cout << "Block is invalid" << endl;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		cout << "Block is corrupted." << endl;
+		cout << "-----------------" << endl;
+		cout << "Reason:" << endl;
+		cout << e.what() << endl;
+		return 1;
+	}
 
 	cout << "DONE" << endl;
 	return 0;

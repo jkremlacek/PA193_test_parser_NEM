@@ -11,6 +11,7 @@ class Hash: public Validatable
 private:
 	std::string data;
 public:
+	Hash() {};
 	Hash(string data);
 	~Hash();
 

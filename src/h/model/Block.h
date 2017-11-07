@@ -8,6 +8,7 @@
 #include "Signature.h"
 #include "Hash.h"
 #include "Transaction.h"
+#include "../utils/SafeConvertor.h"
 
 using namespace std;
 
@@ -16,10 +17,10 @@ class Block: public Validatable
 private:
 	int version;
 	time_t timestamp;
-	Key harvesterKey = nullptr;
-	Signature signature = nullptr;
-	Hash prevBlockHash = nullptr;
-	Hash generationHash = nullptr;
+	Key harvesterKey;
+	Signature signature;
+	Hash prevBlockHash;
+	Hash generationHash;
 	int type;
 	int height;
 	std::list<Transaction> transactions;

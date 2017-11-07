@@ -3,8 +3,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../src/cpp/serialization/JsonAttribute.cpp"
-#include "../src/cpp/model/Block.cpp"
+#include "../src/h/serialization/JsonAttribute.h"
+#include "../src/h/model/Block.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

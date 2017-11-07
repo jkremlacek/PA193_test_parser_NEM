@@ -11,10 +11,8 @@ JsonSerializer::~JsonSerializer()
 	}
 }
 
-Block JsonSerializer::loadBlock(const char * filename)
+Block JsonSerializer::loadBlock(JsonObject* root)
 {
-	JsonObject* root = fromJSONFile(filename);
-
 	if (root->getAttributeCount() != 8)
 	{
 		throw runtime_error("Invalid attribute count in block object");
@@ -22,22 +20,22 @@ Block JsonSerializer::loadBlock(const char * filename)
 
 	Block b = Block();
 
-	if (b.setTimestamp(root->getAttributeWithId("timeStamp").getNumValue())) {
+	if (!b.setTimestamp(root->getAttributeWithId("timeStamp").getNumValue())) {
 		throw runtime_error("Loading block timeStamp failed");
 	}
 
-	if (b.setSignature(Signature(root->getAttributeWithId("signature").getTextValue()))) {
+	if (!b.setSignature(Signature(root->getAttributeWithId("signature").getTextValue()))) {
 		throw runtime_error("Loading block signature failed");
 	}
 
 	JsonObject* prevBlockHashJO = getJsonObjectWithId(root->getAttributeWithId("prevBlockHash").getJsonValueAt(0));
 
-	if (b.setPrevBlockHash(Hash(prevBlockHashJO->getAttributeWithId("data").getTextValue())))
+	if (!b.setPrevBlockHash(Hash(prevBlockHashJO->getAttributeWithId("data").getTextValue())))
 	{
 		throw runtime_error("Loading block prevBlockHash failed");
 	}
 
-	if (b.setType(root->getAttributeWithId("type").getNumValue()))
+	if (!b.setType(root->getAttributeWithId("type").getNumValue()))
 	{
 		throw runtime_error("Loading block type failed");
 	}
@@ -55,23 +53,23 @@ Block JsonSerializer::loadBlock(const char * filename)
 
 		Transaction t;
 
-		if (t.setTimestamp(transactionJO->getAttributeWithId("timeStamp").getNumValue())) {
+		if (!t.setTimestamp(transactionJO->getAttributeWithId("timeStamp").getNumValue())) {
 			throw runtime_error("Loading " +  to_string(i) + ". transaction timeStamp failed");
 		}
 
-		if (t.setAmount(transactionJO->getAttributeWithId("amount").getNumValue())) {
+		if (!t.setAmount(transactionJO->getAttributeWithId("amount").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction amount failed");
 		}
 
-		if (t.setSignature(transactionJO->getAttributeWithId("signature").getTextValue())) {
+		if (!t.setSignature(transactionJO->getAttributeWithId("signature").getTextValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction signature failed");
 		}
 
-		if (t.setFee(transactionJO->getAttributeWithId("fee").getNumValue())) {
+		if (!t.setFee(transactionJO->getAttributeWithId("fee").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction fee failed");
 		}
 
-		if (t.setRecipient(Key(transactionJO->getAttributeWithId("recipient").getTextValue()))) {
+		if (!t.setRecipient(Key(transactionJO->getAttributeWithId("recipient").getTextValue()))) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction recipient failed");
 		}
 
@@ -81,23 +79,23 @@ Block JsonSerializer::loadBlock(const char * filename)
 		}
 		//TODO: mosaics
 
-		if (t.setType(transactionJO->getAttributeWithId("type").getNumValue())) {
+		if (!t.setType(transactionJO->getAttributeWithId("type").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
 		}
 
-		if (t.setDeadline(transactionJO->getAttributeWithId("deadline").getNumValue())) {
+		if (!t.setDeadline(transactionJO->getAttributeWithId("deadline").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction deadline failed");
 		}
 
-		if (transactionJO->containsAttributeWithId("message"))
+		if (!transactionJO->containsAttributeWithId("message"))
 		{
 			JsonObject* message = getJsonObjectWithId(transactionJO->getAttributeWithId("message").getJsonValueAt(0));
 
-			if (t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
+			if (!t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
 				throw runtime_error("Loading " + to_string(i) + ". transaction payload failed");
 			}
 
-			if (t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
+			if (!t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
 				throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
 			}
 		}
@@ -105,11 +103,11 @@ Block JsonSerializer::loadBlock(const char * filename)
 			throw runtime_error("Loading " + to_string(i) + ". transaction message failed");
 		}
 
-		if (t.setVersion(transactionJO->getAttributeWithId("version").getNumValue())) {
+		if (!t.setVersion(transactionJO->getAttributeWithId("version").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction version failed");
 		}
 
-		if (t.setSigner(transactionJO->getAttributeWithId("signer").getTextValue())) {
+		if (!t.setSigner(transactionJO->getAttributeWithId("signer").getTextValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction signer failed");
 		}
 

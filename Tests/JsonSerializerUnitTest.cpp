@@ -3,11 +3,11 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../src/cpp/serialization/JsonSerializer.cpp"
-#include "../src/cpp/model/Transaction.cpp"
-#include "../src/cpp/model/Key.cpp"
-#include "../src/cpp/model/Signature.cpp"
-#include "../src/cpp/model/Hash.cpp"
+#include "../src/h/serialization/JsonSerializer.h"
+#include "../src/h/model/Transaction.h"
+#include "../src/h/model/Key.h"
+#include "../src/h/model/Signature.h"
+#include "../src/h/model/Hash.h"
 
 using namespace std;
 

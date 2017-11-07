@@ -33,7 +33,7 @@ public:
 	/*
 		loads NEM block from a JSON file
 	*/
-	Block loadBlock(const char* filename);
+	Block loadBlock(JsonObject* root);
 
 	/*
 		loads JSON object from JSON file

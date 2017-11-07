@@ -10,12 +10,30 @@ Block::~Block()
 
 bool Block::setVersion(double version)
 {
-	return false;
+	try
+	{
+		this->version = SafeConvertor::toInt(version);
+	}
+	catch (const std::exception&)
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 bool Block::setTimestamp(double timestamp)
 {
-	return false;
+	try
+	{
+		this->timestamp = SafeConvertor::toTime(timestamp);
+	}
+	catch (const std::exception&) 
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool Block::setHarversterKey(Key key)
@@ -40,12 +58,30 @@ bool Block::setGenerationHash(Hash hash)
 
 bool Block::setType(double type)
 {
-	return false;
+	try
+	{
+		this->type = SafeConvertor::toInt(type);
+	}
+	catch (const std::exception&)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool Block::setHeight(double height)
 {
-	return false;
+	try
+	{
+		this->height = SafeConvertor::toInt(height);
+	}
+	catch (const std::exception&)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool Block::addTransaction(Transaction transaction)

@@ -10,6 +10,7 @@ class Key: public Validatable
 {
 	string hash;
 public:
+	Key() {};
 	Key(string hash);
 	~Key();
 

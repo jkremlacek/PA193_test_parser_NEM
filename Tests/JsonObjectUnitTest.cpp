@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../src/cpp/serialization/JsonObject.cpp"
+#include "../src/h/serialization/JsonObject.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

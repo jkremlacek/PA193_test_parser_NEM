@@ -16,6 +16,15 @@
     <Filter Include="Source Files\tests">
       <UniqueIdentifier>{12563056-8ddc-4df2-9aad-3da864ee1bb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tests\serialization">
+      <UniqueIdentifier>{ba0d280e-3ca9-4b47-bf95-d3fafdb0cbc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\utils">
+      <UniqueIdentifier>{f38008cb-68ab-4f9f-a238-8d689a31b682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests\model">
+      <UniqueIdentifier>{2872d7ac-9a03-40c9-bf96-d8afa80bb43d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -32,17 +41,23 @@
     <ClCompile Include="unittest1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JsonSerializerUnitTest.cpp">
+    <ClCompile Include="VerifyBlockAttributesUnitTest.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
     <ClCompile Include="JsonAttributeUnitTest.cpp">
-      <Filter>Source Files\tests</Filter>
+      <Filter>Source Files\tests\serialization</Filter>
     </ClCompile>
     <ClCompile Include="JsonObjectUnitTest.cpp">
-      <Filter>Source Files\tests</Filter>
+      <Filter>Source Files\tests\serialization</Filter>
     </ClCompile>
-    <ClCompile Include="VerifyBlockAttributesUnitTest.cpp">
-      <Filter>Source Files\tests</Filter>
+    <ClCompile Include="JsonSerializerUnitTest.cpp">
+      <Filter>Source Files\tests\serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeConvertorUnitTest.cpp">
+      <Filter>Source Files\tests\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockUnitTest.cpp">
+      <Filter>Source Files\tests\model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

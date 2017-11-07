@@ -10,6 +10,7 @@ class Signature: public Validatable
 {
 	string hash;
 public:
+	Signature() {};
 	Signature(string hash);
 	~Signature();
 
