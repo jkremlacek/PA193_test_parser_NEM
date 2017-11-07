@@ -1,13 +1,16 @@
 #pragma once
 
-#include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "..\src\h\model\Block.h"
+#include "../src/h/model/Signature.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace tests
 {
+	TEST_CLASS(SignatureUnitTest) {
 
+public:
+
+	};
 }
