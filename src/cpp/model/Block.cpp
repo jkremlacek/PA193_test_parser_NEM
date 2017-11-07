@@ -36,24 +36,24 @@ bool Block::setTimestamp(double timestamp)
 	return true;
 }
 
-bool Block::setHarversterKey(Key key)
+void Block::setHarversterKey(Key key)
 {
-	return false;
+	this->harvesterKey = key;
 }
 
-bool Block::setSignature(Signature signature)
+void Block::setSignature(Signature signature)
 {
-	return false;
+	this->signature = signature;
 }
 
-bool Block::setPrevBlockHash(Hash hash)
+void Block::setPrevBlockHash(Hash hash)
 {
-	return false;
+	this->prevBlockHash = hash;
 }
 
-bool Block::setGenerationHash(Hash hash)
+void Block::setGenerationHash(Hash hash)
 {
-	return false;
+	this->generationHash = hash;
 }
 
 bool Block::setType(double type)
@@ -84,9 +84,9 @@ bool Block::setHeight(double height)
 	return true;
 }
 
-bool Block::addTransaction(Transaction transaction)
+void Block::addTransaction(Transaction transaction)
 {
-	return false;
+	this->transactions.push_back(transaction);
 }
 
 bool Block::isValid() {

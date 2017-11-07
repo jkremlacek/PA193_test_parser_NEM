@@ -24,16 +24,11 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		throw runtime_error("Loading block timeStamp failed");
 	}
 
-	if (!b.setSignature(Signature(root->getAttributeWithId("signature").getTextValue()))) {
-		throw runtime_error("Loading block signature failed");
-	}
+	b.setSignature(Signature(root->getAttributeWithId("signature").getTextValue()));
 
 	JsonObject* prevBlockHashJO = getJsonObjectWithId(root->getAttributeWithId("prevBlockHash").getJsonValueAt(0));
 
-	if (!b.setPrevBlockHash(Hash(prevBlockHashJO->getAttributeWithId("data").getTextValue())))
-	{
-		throw runtime_error("Loading block prevBlockHash failed");
-	}
+	b.setPrevBlockHash(Hash(prevBlockHashJO->getAttributeWithId("data").getTextValue()));
 
 	if (!b.setType(root->getAttributeWithId("type").getNumValue()))
 	{
@@ -46,7 +41,7 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 	{
 		JsonObject* transactionJO = getJsonObjectWithId(transactions.getJsonValueAt(i));
 
-		if (root->getAttributeCount() != 10 && (root->getAttributeCount() != 11))
+		if (transactionJO->getAttributeCount() != 10 && (transactionJO->getAttributeCount() != 11))
 		{
 			throw runtime_error("Invalid attribute count in transaction object");
 		}

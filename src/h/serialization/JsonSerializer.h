@@ -31,7 +31,7 @@ public:
 	~JsonSerializer();
 
 	/*
-		loads NEM block from a JSON file
+		loads NEM block from a JSON object
 	*/
 	Block loadBlock(JsonObject* root);
 

@@ -12,57 +12,57 @@ Transaction::~Transaction()
 
 bool Transaction::setTimestamp(double timestamp)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setAmount(double amount)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setSignature(Signature signature)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setFee(double fee)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setRecipient(Key recipient)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setType(double type)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setDeadline(double deadline)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setMessagePayload(string messagePayload)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setMessageType(double messageType)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setVersion(double version)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::setSigner(Key signer)
 {
-	return false;
+	return true;
 }
 
 bool Transaction::isValid() {

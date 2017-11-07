@@ -31,13 +31,13 @@ public:
 
 	bool setVersion(double version);
 	bool setTimestamp(double timestamp);
-	bool setHarversterKey(Key key);
-	bool setSignature(Signature signature);
-	bool setPrevBlockHash(Hash hash); 
-	bool setGenerationHash(Hash hash);
+	void setHarversterKey(Key key);
+	void setSignature(Signature signature);
+	void setPrevBlockHash(Hash hash); 
+	void setGenerationHash(Hash hash);
 	bool setType(double type);
 	bool setHeight(double height);
-	bool addTransaction(Transaction transaction);
+	void addTransaction(Transaction transaction);
 
 	bool isValid() override;
 };

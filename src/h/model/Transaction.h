@@ -10,15 +10,15 @@ class Transaction: public Validatable
 {
 	time_t timestamp;
 	int amount;
-	Signature signature = nullptr;
+	Signature signature;
 	int fee;
-	Key recipient = nullptr;
+	Key recipient;
 	int type;
 	time_t deadline;
 	string messagePayload;
 	int messageType;
 	int version;
-	Key signer = nullptr;
+	Key signer;
 public:
 	Transaction();
 	~Transaction();

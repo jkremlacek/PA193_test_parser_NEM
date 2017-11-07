@@ -300,6 +300,14 @@ namespace tests
 			Assert::AreEqual(signer, transactionObject->getAttributeWithId("signer").getTextValue());
 		}
 
-		//TODO: loadBlock_Test once implementation is complete
+		TEST_METHOD(loadBlock_Test) {
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block.json");
+
+			//Block b = jss.loadBlock(root);
+
+			//TODO: run isValid() once implemented
+		}
 	};
 }
