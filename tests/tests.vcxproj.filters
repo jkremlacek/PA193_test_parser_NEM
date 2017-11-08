@@ -38,9 +38,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VerifyBlockAttributesUnitTest.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
     <ClCompile Include="JsonAttributeUnitTest.cpp">
       <Filter>Source Files\tests\serialization</Filter>
     </ClCompile>

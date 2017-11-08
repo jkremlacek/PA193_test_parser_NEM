@@ -106,7 +106,6 @@
     <ClCompile Include="TransactionUnitTest.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="VerifyBlockAttributesUnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PA193_test_parser_NEM.vcxproj">
