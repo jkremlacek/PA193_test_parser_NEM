@@ -321,5 +321,15 @@ namespace tests
 
 			//TODO: run isValid() once implemented
 		}
+
+		TEST_METHOD(loadBlock_MosaicTA_Test) {
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block_with_mosaic_TA.json");
+
+			Block b = jss.loadBlock(root);
+
+			//TODO: run isValid() once implemented
+		}
 	};
 }

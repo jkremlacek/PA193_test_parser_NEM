@@ -5,6 +5,7 @@
 #include <streambuf>
 #include <string>
 #include <map>
+#include <list>
 
 #include "JsonObject.h"
 #include "../model/Block.h"
