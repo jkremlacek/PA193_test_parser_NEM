@@ -10,6 +10,12 @@
 
 #define NEM_NEMESIS_EPOCH 1427587585
 
+#define TRANSFER 0x101
+#define TRANSFER_OF_IMPORTANCE 0x801
+#define AGGREGATE_MODIFICATION_TRANSACTION 0x1001
+#define MULTISIG_SIGNATURE_TRANSACTION 0x1002
+#define MULTISIG_TRANSACTION 0x1003
+
 using namespace std;
 
 /*
@@ -21,20 +27,23 @@ class Transaction : public Validatable
 	The number of seconds elapsed since the creation of the nemesis block. Future timestamps are not allowed.
 	Transaction validation detects future timestamps and returns an error in that case.
 	*/
-	time_t timestamp;
-	long long amount;
+	time_t timestamp = NULL;
+	long long amount = LLONG_MIN;
 	Signature signature;
-	int fee;
+	int fee = INT_MIN;
 	Key recipient;
-	int type;
-	time_t deadline;
+	int type = INT_MIN;
+	time_t deadline = NULL;
 	string messagePayload;
-	int messageType;
-	int version;
+	int messageType = INT_MIN;
+	int version = INT_MIN;
 	Key signer;
 	std::list<Mosaic> mosaics;
-	//TODO: Mosaic - Mosaic transaction?
-	//TODO: Sender - Transfer transaction
+
+public:
+	Transaction();
+	~Transaction();
+
 	bool isAmountValid(long long amount);
 	bool isTypeValid(int type);
 	bool isTimestampValid(time_t timestamp);
@@ -43,11 +52,6 @@ class Transaction : public Validatable
 	bool isMessagePayloadValid(string messagePayload);
 	bool isMessageTypeValid(int messageType);
 	bool isVersionValid(int version);
-	bool isMosaicsValid(std::list<Mosaic> mosaics);
-
-public:
-	Transaction();
-	~Transaction();
 
 	bool setTimestamp(double timestamp);
 	time_t getTimestamp();
