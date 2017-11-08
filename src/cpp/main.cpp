@@ -60,7 +60,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			return 1;
 		}
 
-		jo2 = jss.fromJSONFile(filename1.c_str());
+		jo2 = jss.fromJSONFile(filename2.c_str());
 	}
 
 	// check if the blocks were successfully loaded to the JsonObjects

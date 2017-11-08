@@ -28,13 +28,13 @@ public:
 	Block();
 	~Block();
 
-	double getVersion();
-	double getTimestamp();
+	int getVersion();
+	time_t getTimestamp();
 	Key getHarversterKey();
 	Signature getSignature();
 	Hash getPrevBlockHash();
-	double getType();
-	double getHeight();
+	int getType();
+	int getHeight();
 	list<Transaction> getTransactions();
 
 	bool setVersion(double version);

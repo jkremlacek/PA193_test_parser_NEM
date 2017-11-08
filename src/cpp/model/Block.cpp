@@ -8,12 +8,12 @@ Block::~Block()
 {
 }
 
-double Block::getVersion()
+int Block::getVersion()
 {
 	return this->version;
 }
 
-double Block::getTimestamp()
+time_t Block::getTimestamp()
 {
 	return this->timestamp;
 }
@@ -33,12 +33,12 @@ Hash Block::getPrevBlockHash()
 	return this->prevBlockHash;
 }
 
-double Block::getType()
+int Block::getType()
 {
 	return this->type;
 }
 
-double Block::getHeight()
+int Block::getHeight()
 {
 	return this->height;
 }

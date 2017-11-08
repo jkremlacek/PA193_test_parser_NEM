@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-JsonSerializer jss;
+//JsonSerializer jss;
 
 namespace tests
 {
