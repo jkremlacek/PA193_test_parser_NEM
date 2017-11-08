@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppUnitTest.h"
-
+#include "stdafx.h"
 #include "../src/h/model/Key.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
