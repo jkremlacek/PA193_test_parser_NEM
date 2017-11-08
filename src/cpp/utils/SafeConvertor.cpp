@@ -14,7 +14,7 @@ int SafeConvertor::toInt(double num)
 
 time_t SafeConvertor::toTime(double num)
 {
-	time_t time = num;
+	time_t time = (time_t) num;
 
 	if (((double)time) - num != 0)
 	{
