@@ -136,6 +136,7 @@ bool Block::isValid() {
 	return
 		(this->version == 1 || this->version == -1) &&
 		//TODO: validate timestamp
+
 		this->harvesterKey.isValid() &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
