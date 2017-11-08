@@ -57,6 +57,9 @@
     <ClInclude Include="src\h\utils\SafeConvertor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\h\model\Mosaic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -93,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\cpp\utils\SafeConvertor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpp\model\Mosaic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

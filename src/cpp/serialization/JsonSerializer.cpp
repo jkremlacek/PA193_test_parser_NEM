@@ -26,7 +26,17 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 
 	b.setSignature(Signature(root->getAttributeWithId("signature").getTextValue()));
 
+	if (root->getAttributeWithId("prevBlockHash").getType() != SINGLE_OBJECT)
+	{
+		throw runtime_error("Loading block prevBlockHash failed, ambiguous object");
+	}
+
 	JsonObject* prevBlockHashJO = getJsonObjectWithId(root->getAttributeWithId("prevBlockHash").getJsonValueAt(0));
+
+	if (prevBlockHashJO->getAttributeCount() != 1)
+	{
+		throw runtime_error("Loading block prevBlockHash failed, invalid argument count");
+	}
 
 	b.setPrevBlockHash(Hash(prevBlockHashJO->getAttributeWithId("data").getTextValue()));
 
@@ -72,7 +82,43 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		{
 			throw runtime_error("Loading " + to_string(i) + ". transaction failed, missing mosaics argument");
 		}
-		//TODO: mosaics
+		
+		if (transactionJO->containsAttributeWithId("mosaics"))
+		{
+			JsonAttribute mosaics = transactionJO->getAttributeWithId("mosaics");
+
+			list<Mosaic> mosaicList;
+
+			for (int j = 0; j < mosaics.getJsonObjectCount(); j++)
+			{
+				JsonObject* mosaicJO = getJsonObjectWithId(mosaics.getJsonValueAt(j));
+				Mosaic mosaicObj;
+
+				mosaicObj.setQuantity(mosaicJO->getAttributeWithId("quantity").getNumValue());
+
+				if (mosaicJO->getAttributeWithId("mosaicId").getType() != SINGLE_OBJECT)
+				{
+					throw runtime_error("Loading " + to_string(i) + ". transaction failed, ambiguous mosaicId detected");
+				}
+
+				JsonObject* mosaicIdJO = getJsonObjectWithId(mosaicJO->getAttributeWithId("mosaicId").getJsonValueAt(0));
+
+				if (mosaicIdJO->getAttributeCount() != 2)
+				{
+					throw runtime_error("Loading " + to_string(i) + ". transaction failed, invalid mosaicId attribute count");
+				}
+
+				mosaicObj.setNamespaceId(mosaicIdJO->getAttributeWithId("namespaceId").getTextValue());
+				mosaicObj.setName(mosaicIdJO->getAttributeWithId("name").getTextValue());
+
+				mosaicList.push_back(mosaicObj);
+			}
+
+			if (!t.setMosaics(mosaicList))
+			{
+				throw runtime_error("Loading " + to_string(i) + ". transaction failed, setting mosaics failed");
+			}
+		}
 
 		if (!t.setType(transactionJO->getAttributeWithId("type").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
@@ -86,13 +132,26 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		{
 			JsonObject* message = getJsonObjectWithId(transactionJO->getAttributeWithId("message").getJsonValueAt(0));
 
-			if (!t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
-				throw runtime_error("Loading " + to_string(i) + ". transaction payload failed");
+			switch (message->getAttributeCount())
+			{
+			case 2:
+				if (!t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
+					throw runtime_error("Loading " + to_string(i) + ". transaction payload failed");
+				}
+
+				if (!t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
+					throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
+				}
+				break;
+			case 0:
+				//empty message is valid
+				break;
+			default:
+				throw runtime_error("Loading " + to_string(i) + ".transaction message failed, invalid attribute count");
+				break;
 			}
 
-			if (!t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
-				throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
-			}
+			
 		}
 		else {
 			throw runtime_error("Loading " + to_string(i) + ". transaction message failed");

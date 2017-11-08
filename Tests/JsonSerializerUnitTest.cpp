@@ -177,6 +177,18 @@ namespace tests
 			Assert::AreEqual(1000.1001, jo->getAttributeWithId("testName").getNumValue());
 		}
 
+		TEST_METHOD(fromString_singleAttribute_IntNumber_Test) {
+			string str = "{\"testName\":257}";
+
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* jo = jss.fromString(str).second;
+
+			Assert::AreEqual(1, jo->getAttributeCount());
+			Assert::AreEqual("testName", jo->getAttributeWithId("testName").getName().c_str());
+			Assert::AreEqual(257, (int)jo->getAttributeWithId("testName").getNumValue());
+		}
+
 		TEST_METHOD(fromString_singleAttribute_Bool_Test) {
 			string str = "{\"testName\":true}";
 
@@ -307,7 +319,17 @@ namespace tests
 
 			Block b = jss.loadBlock(root);
 
-			//TODO: run isValid() once implemented
+			Assert::IsTrue(b.isValid());
+		}
+
+		TEST_METHOD(loadBlock_MosaicTA_Test) {
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* root = jss.fromJSONFile("../ExampleData/ValidBlock/block_with_mosaic_TA.json");
+
+			Block b = jss.loadBlock(root);
+
+			Assert::IsTrue(b.isValid());
 		}
 	};
 }
