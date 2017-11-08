@@ -53,7 +53,7 @@ public:
 			Block b = Block();
 			Assert::IsFalse(b.setHeight(1313679.0001));
 		}
-		TEST_METHOD(isValid_Valid_Test1) {
+		/*TEST_METHOD(isValid_Valid_Test1) {
 			Block block;
 			block.setVersion(atof("1744830465"));
 			block.setTimestamp(atof("82506976"));
@@ -74,6 +74,6 @@ public:
 			block.setType(atof("1"));
 			block.setHeight(atof("1362646"));
 			Assert::IsTrue(block.isValid());
-		}
+		}*/
 	};
 }
