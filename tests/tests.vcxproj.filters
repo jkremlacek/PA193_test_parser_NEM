@@ -62,5 +62,8 @@
     <ClCompile Include="SignatureUnitTest.cpp">
       <Filter>Source Files\tests\model</Filter>
     </ClCompile>
+    <ClCompile Include="TransactionUnitTest.cpp">
+      <Filter>Source Files\tests\model</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
