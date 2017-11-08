@@ -106,7 +106,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TransactionUnitTest.cpp" />
-    <ClCompile Include="unittest1.cpp" />
     <ClCompile Include="VerifyBlockAttributesUnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
