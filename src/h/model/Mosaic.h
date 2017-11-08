@@ -34,7 +34,11 @@ private:
 	// The mosaic quantity. The quantity is always given in smallest units for the mosaic, i.e. 
 	// if it has a divisibility of 3 the quantity is given in millis. 
 	// @See: https://bob.nem.ninja/docs/#mosaicDefinition
-	int quantity;
+	long long quantity;
+
+	bool isQuantityValid(long long quantity);
+	bool isNamespaceIdValid(string namespaceId);
+	bool isNameValid(string name);
 
 public:
 	Mosaic();
@@ -45,7 +49,7 @@ public:
 	bool setName(string name);
 	string getName();
 	bool setQuantity(double quantity);
-	int getQuantity();
+	long long getQuantity();
 
 	bool isValid() override;
 };
