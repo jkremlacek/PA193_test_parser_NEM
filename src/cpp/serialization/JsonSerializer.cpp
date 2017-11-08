@@ -72,7 +72,7 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		{
 			throw runtime_error("Loading " + to_string(i) + ". transaction failed, missing mosaics argument");
 		}
-		//TODO: mosaics
+		//TODO: mosaics and namespaces: https://bob.nem.ninja/docs/
 
 		if (!t.setType(transactionJO->getAttributeWithId("type").getNumValue())) {
 			throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
