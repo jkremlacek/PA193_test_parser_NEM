@@ -36,13 +36,43 @@ public:
 	}
 	TEST_METHOD(setFee_Valid_Test) {
 		Transaction t = Transaction();
-		//TODO: Set alongside with amount and message payload to _calculate_ the fee.
 		Assert::IsTrue(t.setFee(2005000000));
 	}
 	TEST_METHOD(setFee_Invalid_Test) {
 		Transaction t = Transaction();
-		//TODO: Set alongside with amount and message payload to _calculate_ the fee.
 		Assert::IsFalse(t.setFee(-2005000000));
+	}
+	TEST_METHOD(isFeeValid_Transfer_Valid_Test) {
+		Transaction t = Transaction();
+		t.setAmount(45000);
+		t.setType(TRANSFER);
+		t.setFee(4);
+		Assert::IsTrue(t.isFeeValid(4));
+	}
+	TEST_METHOD(isFeeValid_Transfer_Invalid_Test) {
+		Transaction t = Transaction();
+		t.setAmount(45000);
+		t.setType(TRANSFER);
+		t.setFee(3);
+		Assert::IsFalse(t.isFeeValid(3));
+	}
+	TEST_METHOD(isFeeValid_MsgPayload_Valid_Test) {
+		Transaction t = Transaction();
+		t.setAmount(45000);
+		t.setMessageType(1);
+		t.setMessagePayload("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		t.setType(TRANSFER);
+		t.setFee(7);
+		Assert::IsTrue(t.isFeeValid(7));
+	}
+	TEST_METHOD(isFeeValid_MsgPayload_Invalid_Test) {
+		Transaction t = Transaction();
+		t.setAmount(45000);
+		t.setMessageType(1);
+		t.setMessagePayload("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		t.setType(TRANSFER);
+		t.setFee(7);
+		Assert::IsFalse(t.isFeeValid(7));
 	}
 	TEST_METHOD(setDeadline_Valid_Test) {
 		Transaction t = Transaction();

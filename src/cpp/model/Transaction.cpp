@@ -54,7 +54,7 @@ time_t Transaction::getTimestamp() {
 }
 bool Transaction::isTimestampValid(time_t timestamp) {
 	// TODO: Do not validate against UNIX epoch, use number of seconds since NEM nemesis block creation as "NEM epoch".
-	if (timestamp > time(NULL)-NEM_NEMESIS_EPOCH) {
+	if (timestamp > time(NULL) - NEM_NEMESIS_EPOCH) {
 		return false;
 	}
 	return true;
@@ -91,7 +91,8 @@ Signature Transaction::getSignature() {
 
 bool Transaction::setFee(double fee) {
 	int tmp = SafeConvertor::toInt(fee);
-	if (isFeeValid(tmp)) {
+	// there is always some fee to the transaction
+	if (tmp > 0) {
 		this->fee = tmp;
 		return true;
 	}
@@ -101,11 +102,49 @@ int Transaction::getFee() {
 	return this->fee;
 }
 bool Transaction::isFeeValid(int fee) {
-	//TODO: Much more to be calculated: https://bob.nem.ninja/docs/#transaction-fees
-	if (fee < 1) {
+	//TODO: Much more to be calculated: https://bob.nem.ninja/docs/#transaction-fees but one would need access the API.
+	int expected_fee_at_least = 0;
+	if (type == TRANSFER) {
+		// Amount not set.
+		if (amount == LLONG_MIN) {
+			return false;
+		}
+		long long fee_from_amount = (this->amount / 10000L);
+		if (fee_from_amount > 25) {
+			expected_fee_at_least += 25;
+		}
+		else {
+			expected_fee_at_least += (int)fee_from_amount; //safe, < 25
+		}
+		if (isMessagePayloadValid(this->messagePayload) && messagePayload.length() > 0) {
+			expected_fee_at_least += (this->messagePayload.length() / 32 + 1);
+		}
+		// We don't know the maximum quantity and divisibility of a particular mosaic,
+		// so we take the floor, which is 1 XEM for a mosaic.
+		expected_fee_at_least += this->mosaics.size();
+	}
+	else if (type == TRANSFER_OF_IMPORTANCE) {
+		expected_fee_at_least += 6;
+	}
+	else if (type == AGGREGATE_MODIFICATION_TRANSACTION) {
+		// 10 + 6 * number of modifications + 6 (if a min cosignatory change is involved)
+		expected_fee_at_least += 16;
+	}
+	else if (type == MULTISIG_SIGNATURE_TRANSACTION) {
+		expected_fee_at_least += 6;
+	}
+	else if (type == MULTISIG_TRANSACTION) {
+		expected_fee_at_least += 6;
+	}
+	else {
 		return false;
 	}
-	return true;
+
+	if (fee >= expected_fee_at_least) {
+		return true;
+	}
+
+	return false;
 }
 
 bool Transaction::setRecipient(Key recipient) {
@@ -138,7 +177,8 @@ bool Transaction::isTypeValid(int type) {
 	0x1002: A multisig signature transaction which is used to sign a multisig transaction.
 	0x1003: A multisig transaction, which is used for multisig accounts.
 	*/
-	if (type == 0x101 || type == 0x801 || type == 0x1001 || type == 0x1002 || type == 0x1003) {
+	if (type == TRANSFER || type == TRANSFER_OF_IMPORTANCE || type == AGGREGATE_MODIFICATION_TRANSACTION ||
+		type == MULTISIG_SIGNATURE_TRANSACTION || type == MULTISIG_TRANSACTION) {
 		return true;
 	}
 	return false;
