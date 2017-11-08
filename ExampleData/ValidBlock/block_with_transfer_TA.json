@@ -1,0 +1,37 @@
+{
+    "height": 1363680,
+    "prevBlockHash": {
+        "data": "cf3ec90984ea6a462ca2d8dce4defc1c70a7bca487e75b2b5588cb0c17578c2f"
+    },
+    "signature": "f5a8a36204ea45e23d3ee471a2383cbe1e621036640549e1b13dd65958203a42e1cbd6f27f767bfb3546f277a47759b324033add213593ca028c9f9644b12008",
+    "signer": "5b82a2d4eb135875465c977adad22260e5c7bd62051709a3d1dedc1809a8057c",
+    "timeStamp": 82569506,
+    "transactions": [
+        {
+            "amount": 136000000000,
+            "deadline": 82576627,
+            "fee": 74912129,
+            "message": {},
+            "recipient": "NBHN7NOB6KTUXHYXJY7K7CAOETTDR6S3KPWZZV6B",
+            "signature": "a2ba1709138e7c5764186fa2866376a41b163df2d2eea1fa1c3666e77455dca6298acc7e676ca2d048ee0c52cd75a93c00b452d268dfe6cabdfb88df4fec1207",
+            "signer": "2f69c71a7cd584e5f92ff787fb1d68aab53985c577eff6e9061c15768899433c",
+            "timeStamp": 82569427,
+            "type": 257,
+            "version": 1744830465
+        },
+        {
+            "amount": 538303485,
+            "deadline": 82612641,
+            "fee": 50000,
+            "message": {},
+            "recipient": "NBWYFP2PW6OCH67ZTNDYJZ2MSWIUAFNTK3HB4AJC",
+            "signature": "6a43a6e2244750de3ad78826a716be66573803a4a31d4ea9fc285956d417932577134bb8bf501fea882e33173180547db9939ce2d3e61fc2d23f1721ccdb7e02",
+            "signer": "8ba5069bd2b8e850600cfe9cdc2cb82908cd4db566345d9c2b9fe0e706e2b64d",
+            "timeStamp": 82569441,
+            "type": 257,
+            "version": 1744830465
+        }
+    ],
+    "type": 1,
+    "version": 1744830465
+}

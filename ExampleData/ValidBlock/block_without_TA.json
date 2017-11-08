@@ -1,0 +1,12 @@
+{
+    "height": 1362409,
+    "prevBlockHash": {
+        "data": "a8a9a0b26fc21f3d8f4c901463da23b15661be41265353d2a2671348c68522fb"
+    },
+    "signature": "cb836c442ab9617f129513758d460658d7817ec5076ab07aeb0d2a90656b4d87309b3b9197b57432f6377ad6c05f8f9c8bd2cb523ee78c18b03f9a8e87545a04",
+    "signer": "f8f9af482680d75e24e9aa15f0340b506566b05d52893bcee15832a41635f1d1",
+    "timeStamp": 82492819,
+    "transactions": [],
+    "type": 1,
+    "version": 1744830465
+}
