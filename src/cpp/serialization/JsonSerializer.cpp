@@ -109,7 +109,7 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 				}
 
 				mosaicObj.setNamespaceId(mosaicIdJO->getAttributeWithId("namespaceId").getTextValue());
-				mosaicObj.setNamespaceId(mosaicIdJO->getAttributeWithId("name").getTextValue());
+				mosaicObj.setName(mosaicIdJO->getAttributeWithId("name").getTextValue());
 
 				mosaicList.push_back(mosaicObj);
 			}

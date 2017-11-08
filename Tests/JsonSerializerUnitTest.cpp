@@ -320,8 +320,6 @@ namespace tests
 			Block b = jss.loadBlock(root);
 
 			Assert::IsTrue(b.isValid());
-
-			//TODO: run isValid() once implemented
 		}
 
 		TEST_METHOD(loadBlock_MosaicTA_Test) {
@@ -331,7 +329,7 @@ namespace tests
 
 			Block b = jss.loadBlock(root);
 
-			//TODO: run isValid() once implemented
+			Assert::IsTrue(b.isValid());
 		}
 	};
 }
