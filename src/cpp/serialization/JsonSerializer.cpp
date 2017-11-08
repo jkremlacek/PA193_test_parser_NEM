@@ -132,13 +132,26 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		{
 			JsonObject* message = getJsonObjectWithId(transactionJO->getAttributeWithId("message").getJsonValueAt(0));
 
-			if (!t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
-				throw runtime_error("Loading " + to_string(i) + ". transaction payload failed");
+			switch (message->getAttributeCount())
+			{
+			case 2:
+				if (!t.setMessagePayload(message->getAttributeWithId("payload").getTextValue())) {
+					throw runtime_error("Loading " + to_string(i) + ". transaction payload failed");
+				}
+
+				if (!t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
+					throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
+				}
+				break;
+			case 0:
+				//empty message is valid
+				break;
+			default:
+				throw runtime_error("Loading " + to_string(i) + ".transaction message failed, invalid attribute count");
+				break;
 			}
 
-			if (!t.setMessageType(message->getAttributeWithId("type").getNumValue())) {
-				throw runtime_error("Loading " + to_string(i) + ". transaction type failed");
-			}
+			
 		}
 		else {
 			throw runtime_error("Loading " + to_string(i) + ". transaction message failed");
