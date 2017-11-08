@@ -319,6 +319,8 @@ namespace tests
 
 			Block b = jss.loadBlock(root);
 
+			Assert::IsTrue(b.isValid());
+
 			//TODO: run isValid() once implemented
 		}
 

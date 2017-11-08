@@ -92,7 +92,7 @@ Signature Transaction::getSignature() {
 bool Transaction::setFee(double fee) {
 	int tmp = SafeConvertor::toInt(fee);
 	if (isFeeValid(tmp)) {
-		this->type = tmp;
+		this->fee = tmp;
 		return true;
 	}
 	return false;
