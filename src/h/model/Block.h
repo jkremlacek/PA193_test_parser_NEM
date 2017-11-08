@@ -22,11 +22,20 @@ private:
 	Hash prevBlockHash;
 	int type;
 	int height;
-	std::list<Transaction> transactions;
+	list<Transaction> transactions;
 
 public:
 	Block();
 	~Block();
+
+	double getVersion();
+	double getTimestamp();
+	Key getHarversterKey();
+	Signature getSignature();
+	Hash getPrevBlockHash();
+	double getType();
+	double getHeight();
+	list<Transaction> getTransactions();
 
 	bool setVersion(double version);
 	bool setTimestamp(double timestamp);
@@ -38,5 +47,6 @@ public:
 	void addTransaction(Transaction transaction);
 
 	bool isValid() override;
+	bool isValid(Block prevBlock);
 };
 

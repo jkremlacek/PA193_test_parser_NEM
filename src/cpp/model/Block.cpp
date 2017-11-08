@@ -8,6 +8,47 @@ Block::~Block()
 {
 }
 
+double Block::getVersion()
+{
+	return this->version;
+}
+
+double Block::getTimestamp()
+{
+	return this->timestamp;
+}
+
+Key Block::getHarversterKey()
+{
+	return this->harvesterKey;
+}
+
+Signature Block::getSignature()
+{
+	return this->signature;
+}
+
+Hash Block::getPrevBlockHash()
+{
+	return this->prevBlockHash;
+}
+
+double Block::getType()
+{
+	return this->type;
+}
+
+double Block::getHeight()
+{
+	return this->height;
+}
+
+list<Transaction> Block::getTransactions()
+{
+	return this->transactions;
+}
+
+
 bool Block::setVersion(double version)
 {
 	try
@@ -49,11 +90,6 @@ void Block::setSignature(Signature signature)
 void Block::setPrevBlockHash(Hash hash)
 {
 	this->prevBlockHash = hash;
-}
-
-void Block::setGenerationHash(Hash hash)
-{
-	this->generationHash = hash;
 }
 
 bool Block::setType(double type)
@@ -98,13 +134,29 @@ bool Block::isValid() {
 	}
 
 	return
-		//TODO: define which block versions are allowed
-		//this->version == 1 &&
+		(this->version == 1 || this->version == -1) &&
 		//TODO: validate timestamp
 		this->harvesterKey.isValid() &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
-		this->generationHash.isValid() &&
+		//TODO: define which block height is valid
+		transactionsValidResult;
+}
+
+bool Block::isValid(Block prevBlock) {
+	bool transactionsValidResult = true;
+
+	for each (Transaction t in this->transactions)
+	{
+		transactionsValidResult = transactionsValidResult && t.isValid();
+	}
+
+	return
+		(this->version == 1 || this->version == -1) &&
+		//TODO: validate timestamp
+		this->harvesterKey.isValid() &&
+		this->signature.isValid() &&
+		this->prevBlockHash.isValid() &&
 		//TODO: define which block height is valid
 		transactionsValidResult;
 }
