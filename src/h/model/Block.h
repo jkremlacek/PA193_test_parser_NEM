@@ -20,6 +20,7 @@ private:
 	Key harvesterKey;
 	Signature signature;
 	Hash prevBlockHash;
+	Key signer;
 	int type;
 	int height;
 	list<Transaction> transactions;
@@ -33,6 +34,7 @@ public:
 	Key getHarversterKey();
 	Signature getSignature();
 	Hash getPrevBlockHash();
+	void setSigner(Key key);
 	int getType();
 	int getHeight();
 	list<Transaction> getTransactions();
