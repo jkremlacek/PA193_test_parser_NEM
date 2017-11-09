@@ -11,6 +11,5 @@ string Key::getHash() {
 }
 
 bool Key::isValid() {
-	//TODO: implement validation
 	return true;
 }

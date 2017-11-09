@@ -12,6 +12,5 @@ string Signature::getHash() {
 }
 
 bool Signature::isValid() {
-	//TODO: implement validation
 	return true;
 }
