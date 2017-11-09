@@ -14,6 +14,8 @@ public:
 	Signature(string hash);
 	~Signature();
 
+	string getHash();
+
 	bool isValid() override;
 };
 

@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\h\model\Mosaic.h" />
+    <ClInclude Include="src\h\utils\Keccak.h" />
     <ClInclude Include="src\h\utils\SafeConvertor.h" />
     <ClInclude Include="src\h\serialization\JsonAttribute.h" />
     <ClInclude Include="src\h\main.h" />

@@ -1,14 +1,14 @@
 #include "..\..\h\model\Signature.h"
 
 
-Signature::Signature(string hash)
-{
+Signature::Signature(string hash) {
 	this->hash = hash;
 }
 
+Signature::~Signature() {}
 
-Signature::~Signature()
-{
+string Signature::getHash() {
+	return this->hash;
 }
 
 bool Signature::isValid() {
