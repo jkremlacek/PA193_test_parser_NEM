@@ -10,14 +10,21 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	string filename1;
 	string filename2;
+	string isAlsoPrev;
 
 	// if the filename(s) were not supplied to the program as arguments, prompt for them
 	if (argc < 2)
 	{
 		cout << "Please provide filepath to the block JSON file:" << endl;
 		cin >> filename1;
-		cout << "Optionally provide filepath to the previous block JSON file:" << endl;
-		cin >> filename2;
+		cout << "Do you want to also provide a filepath to the previous block JSON file? " <<
+			"If yes, type 'y', if no, type anything else:" << endl;
+		cin >> isAlsoPrev;
+		if (!isAlsoPrev.compare("y"))
+		{
+			cout << "Provide filepath to the previous block JSON file:" << endl;
+			cin >> filename2;
+		}
 	}
 	else {
 		/* if the filenames were supplied as arguments, retrieve them (with conversion from a Unicode
@@ -35,6 +42,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (!ifstream(filename1).good())
 	{
 		cerr << "Cannot open JSON file: " << filename1 << endl;
+		getchar();
 		return 1;
 	}
 
@@ -57,6 +65,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		if (!ifstream(filename2).good())
 		{
 			cerr << "Cannot open JSON file: " << filename2 << endl;
+			getchar();
 			return 1;
 		}
 
@@ -68,12 +77,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << "-----------------" << endl;
 		cerr << "First JSON file is invalid." << endl;
+		getchar();
 		return 1;
 	}
 	if ((argc == 3) && (jo2 == nullptr))
 	{
 		cout << "-----------------" << endl;
 		cerr << "Second JSON file is invalid." << endl;
+		getchar();
 		return 1;
 	}
 
@@ -115,10 +126,12 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << "-----------------" << endl;
 		cout << "Reason:" << endl;
 		cout << e.what() << endl;
+		getchar();
 		return 1;
 	}
 
 	cout << "DONE" << endl;
+	getchar();
 	return 0;
 }
 
