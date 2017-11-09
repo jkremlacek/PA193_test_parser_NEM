@@ -14,6 +14,8 @@ public:
 	Key(string hash);
 	~Key();
 
+	string getHash();
+
 	bool isValid() override;
 };
 

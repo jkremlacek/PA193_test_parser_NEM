@@ -1,5 +1,7 @@
 #include "../../h/model/Transaction.h"
 #include "../../h/utils/SafeConvertor.h"
+#include "../../h/utils/Keccak.h"
+
 
 /*
 Before migration to classes...
@@ -87,6 +89,235 @@ bool Transaction::setSignature(Signature signature) {
 }
 Signature Transaction::getSignature() {
 	return this->signature;
+}
+
+// TODO: use instead of memcpy due to little/big endian?
+/*
+void copyIntToByteArray(char* bytes, int start, int value) {
+	bytes[start + 0] = (value >> 24) & 0xFF;
+	bytes[start + 1] = (value >> 16) & 0xFF;
+	bytes[start + 2] = (value >> 8) & 0xFF;
+	bytes[start + 3] = value & 0xFF;
+}
+
+void copyLongToByteArray(char* bytes, int start, long long value) {
+	bytes[start + 0] = (value >> 56) & 0xFF;
+	bytes[start + 1] = (value >> 48) & 0xFF;
+	bytes[start + 2] = (value >> 40) & 0xFF;
+	bytes[start + 3] = (value >> 32) & 0xFF;
+	bytes[start + 4] = (value >> 24) & 0xFF;
+	bytes[start + 5] = (value >> 16) & 0xFF;
+	bytes[start + 6] = (value >> 8) & 0xFF;
+	bytes[start + 7] = value & 0xFF;
+}
+*/
+
+bool Transaction::isSignatureValid(Signature signature) {
+	u64 bytes_to_sign_len = 0;
+	u64 bytes_to_sign_index = 0;
+	//Common part
+	//Transaction type: 4 bytes (integer).
+	bytes_to_sign_len += 4;
+	//Version: 4 bytes (integer).
+	bytes_to_sign_len += 4;
+	//Timestamp: 4 bytes (integer).
+	bytes_to_sign_len += 4;
+	//Length of public key byte array (always 32): 4 bytes (integer).
+	bytes_to_sign_len += 4;
+	//Public key bytes of signer: 32 bytes.
+	bytes_to_sign_len += 32;
+	//Fee (micro nem): 8 bytes (long).
+	bytes_to_sign_len += 8;
+	//Deadline: 4 bytes (integer).
+	if (this->type == TRANSFER) {
+		//Transfer transaction part
+		//Length of recipient address(always 40) : 4 bytes(integer).
+		bytes_to_sign_len += 4;
+		//Recipient address : 40 bytes(using UTF8 encoding).
+		bytes_to_sign_len += 40;
+		//Amount(micro nem) : 8 bytes(long).
+		bytes_to_sign_len += 8;
+		//Length of message field : 4 bytes(integer).Note : if the length is 0 then the following 2 fields do not apply.
+		bytes_to_sign_len += 4;
+		if (this->messagePayload.length() > 0) {
+			//Message type : 4 bytes(integer).The following message types are supported.
+			bytes_to_sign_len += 4;
+			//Length of payload : 4 bytes(integer).
+			bytes_to_sign_len += this->messagePayload.length();
+			//Payload : UTF8 encoded string.
+		}
+		//	Note : the following part is optional and only available for version 2 transfer transactions that have an attachment.
+		if (version == ((0x68 << 24) + 2) || version == ((0x98 << 24) + 2)) {
+			//Number of mosaics : 4 bytes(integer).
+			bytes_to_sign_len += 4;
+			for each (Mosaic mosaic in this->mosaics) {
+				//Length of mosaic structure : 4 bytes(integer).
+				bytes_to_sign_len += 4;
+				//Length of mosaic id structure : 4 bytes(integer).
+				bytes_to_sign_len += 4;
+				//Length of namespace id string : 4 bytes(integer).
+				bytes_to_sign_len += 4;
+				//namespace id string : UTF8 encoded string.
+				bytes_to_sign_len += mosaic.getNamespaceId().length();
+				//Length of mosaic name string : 4 bytes(integer).
+				bytes_to_sign_len += 4;
+				//Mosaic name string : UTF8 encoded string.
+				bytes_to_sign_len += mosaic.getName().length();
+				//Quantity : 8 bytes(long).
+				bytes_to_sign_len += 8;
+			}
+		}
+	}
+	else if (this->type == TRANSFER_OF_IMPORTANCE) {
+		throw runtime_error("Unsupported transaction type TRANSFER_OF_IMPORTANCE");
+	}
+	else if (this->type == AGGREGATE_MODIFICATION_TRANSACTION) {
+		throw runtime_error("Unsupported transaction type AGGREGATE_MODIFICATION_TRANSACTION");
+	}
+	else if (this->type == MULTISIG_SIGNATURE_TRANSACTION) {
+		throw runtime_error("Unsupported transaction type MULTISIG_SIGNATURE_TRANSACTION");
+	}
+	else if (this->type == MULTISIG_TRANSACTION) {
+		throw runtime_error("Unsupported transaction type MULTISIG_TRANSACTION");
+	}
+	else {
+		throw runtime_error("Unknown transaction type.");
+	}
+
+	u8* bytes_to_sign = (u8*)malloc((size_t)bytes_to_sign_len);
+	if (bytes_to_sign == NULL) {
+		throw runtime_error("Couldn't allocate memeory.");
+	}
+
+	//Common part
+	//Transaction type: 4 bytes (integer).
+	memcpy(bytes_to_sign + bytes_to_sign_index, &(this->type), 4);
+	bytes_to_sign_index += 4;
+	//Version: 4 bytes (integer).
+	memcpy(bytes_to_sign + bytes_to_sign_index, &(this->version), 4);
+	bytes_to_sign_index += 4;
+	//Timestamp: 4 bytes (integer).
+	memcpy(bytes_to_sign + bytes_to_sign_index, &(this->timestamp), 4);
+	bytes_to_sign_index += 4;
+	//Length of public key byte array (always 32): 4 bytes (integer).
+	int signer_hash_length = this->signer.getHash().length();
+	memcpy(bytes_to_sign + bytes_to_sign_index, &signer_hash_length, 4);
+	bytes_to_sign_index += 4;
+	//Public key bytes of signer: 32 bytes.
+	memcpy(bytes_to_sign + bytes_to_sign_index, &(this->signer.getHash()), 32);
+	bytes_to_sign_index += 32;
+	//Fee (micro nem): 8 bytes (long).
+	memcpy(bytes_to_sign + bytes_to_sign_index, &(this->fee), 8);
+	bytes_to_sign_index += 8;
+	//Deadline: 4 bytes (integer).
+	if (this->type == TRANSFER) {
+		//Transfer transaction part
+		//Length of recipient address(always 40) : 4 bytes(integer).
+		int recipient_hash_length = this->recipient.getHash().length();
+		memcpy(bytes_to_sign + bytes_to_sign_index, &recipient_hash_length, 4);
+		bytes_to_sign_index += 4;
+		//Recipient address : 40 bytes(using UTF8 encoding).
+		memcpy(bytes_to_sign + bytes_to_sign_index, &(this->recipient.getHash()), 40);
+		bytes_to_sign_index += 40;
+		//Amount(micro nem) : 8 bytes(long).
+		memcpy(bytes_to_sign + bytes_to_sign_index, &(this->amount), 8);
+		bytes_to_sign_index += 8;
+		//Length of message field : 4 bytes(integer). Note : if the length is 0 then the following 2 fields do not apply.
+		int messaye_payload_length = this->messagePayload.length();
+		memcpy(bytes_to_sign + bytes_to_sign_index, &(messaye_payload_length), 4);
+		bytes_to_sign_index += 4;
+		if (messaye_payload_length > 0) {
+			//Message type : 4 bytes(integer).The following message types are supported.
+			memcpy(bytes_to_sign + bytes_to_sign_index, &(this->messageType), 4);
+			bytes_to_sign_index += 4;
+			//Length of payload : 4 bytes(integer).
+			// By "Length of message field" they might think payload + int for its size?
+			//Payload : UTF8 encoded string.
+			memcpy(bytes_to_sign + bytes_to_sign_index, &(this->getMessagePayload()), messaye_payload_length);
+			bytes_to_sign_index += messaye_payload_length;
+		}
+		//	Note : the following part is optional and only available for version 2 transfer transactions that have an attachment.
+		if (version == ((0x68 << 24) + 2) || version == ((0x98 << 24) + 2)) {
+			//Number of mosaics : 4 bytes(integer).
+			int number_of_mosaics = this->mosaics.size();
+			memcpy(bytes_to_sign + bytes_to_sign_index, &(number_of_mosaics), 4);
+			bytes_to_sign_index += 4;
+			for each (Mosaic mosaic in this->mosaics) {
+				//Length of mosaic structure : 4 bytes(integer).
+				int length_of_mosaic_namespace_id = mosaic.getNamespaceId().length();
+				int length_of_mosaic_name = mosaic.getName().length();
+				int length_of_mosaic_structure = 4 + length_of_mosaic_namespace_id + 4 + length_of_mosaic_name + 8;
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(length_of_mosaic_structure), 4);
+				bytes_to_sign_index += 4;
+				//Length of mosaic id structure : 4 bytes(integer).
+				int length_of_mosaic_id_structure = 4 + length_of_mosaic_namespace_id + 4 + length_of_mosaic_name;
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(length_of_mosaic_id_structure), 4);
+				bytes_to_sign_index += 4;
+				//Length of namespace id string : 4 bytes(integer).
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(length_of_mosaic_namespace_id), 4);
+				bytes_to_sign_index += 4;
+				//namespace id string : UTF8 encoded string.
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(mosaic.getNamespaceId()), length_of_mosaic_namespace_id);
+				bytes_to_sign_index += length_of_mosaic_namespace_id;
+				//Length of mosaic name string : 4 bytes(integer).
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(length_of_mosaic_name), 4);
+				bytes_to_sign_index += 4;
+				//Mosaic name string : UTF8 encoded string.
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(mosaic.getName()), length_of_mosaic_name);
+				bytes_to_sign_index += length_of_mosaic_name;
+				//Quantity : 8 bytes(long).
+				long long quantity = mosaic.getQuantity();
+				memcpy(bytes_to_sign + bytes_to_sign_index, &(quantity), 8);
+			}
+		}
+	}
+	else if (this->type == TRANSFER_OF_IMPORTANCE) {
+	}
+	else if (this->type == AGGREGATE_MODIFICATION_TRANSACTION) {
+	}
+	else if (this->type == MULTISIG_SIGNATURE_TRANSACTION) {
+	}
+	else if (this->type == MULTISIG_TRANSACTION) {
+	}
+	else {
+		throw runtime_error("Unknown transaction type.");
+	}
+
+	char* bytes_hex = (char*)malloc((size_t)bytes_to_sign_len * 2 + 1);
+	if (bytes_hex == NULL) {
+		throw runtime_error("Couldn't allocate memeory.");
+	}
+
+	hexencode(bytes_to_sign, bytes_to_sign_len, bytes_hex, bytes_to_sign_len * 2);
+	bytes_hex[(size_t)bytes_to_sign_len * 2] = '\0';
+
+	cout << "Hex encoded:            " << bytes_hex << endl;
+
+	u8* hash_bytes = (u8*)malloc(32);
+	if (hash_bytes == NULL) {
+		throw runtime_error("Couldn't allocate memeory.");
+	}
+
+	FIPS202_SHA3_256(bytes_to_sign, bytes_to_sign_len, hash_bytes);
+
+	char* hash_bytes_hex = (char*)malloc(2 * 32 + 1);
+	if (hash_bytes_hex == NULL) {
+		throw runtime_error("Couldn't allocate memeory.");
+	}
+
+	hexencode(hash_bytes, 32, hash_bytes_hex, 2 * 32);
+	hash_bytes_hex[2 * 32] = '\0';
+
+	cout << "Hashed and hex encoded: " << hash_bytes_hex << endl;
+
+	cout << "Original signature:     " << this->signature.getHash() << endl;
+
+	free(bytes_to_sign);
+	free(bytes_hex);
+	free(hash_bytes);
+	free(hash_bytes_hex);
+
+	return true;
 }
 
 bool Transaction::setFee(double fee) {
@@ -309,7 +540,7 @@ bool Transaction::isValid() {
 	}
 	return  isTimestampValid(this->timestamp) &&
 		isAmountValid(this->amount) &&
-		this->signature.isValid() &&
+		isSignatureValid(this->signature) &&
 		isFeeValid(this->fee) &&
 		this->recipient.isValid() &&
 		isTypeValid(this->type) &&

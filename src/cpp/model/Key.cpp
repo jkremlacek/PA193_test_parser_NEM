@@ -1,14 +1,13 @@
 #include "../../h/model/Key.h"
 
-
-Key::Key(string hash)
-{
+Key::Key(string hash) {
 	this->hash = hash;
 }
 
+Key::~Key() {}
 
-Key::~Key()
-{
+string Key::getHash() {
+	return this->hash;
 }
 
 bool Key::isValid() {

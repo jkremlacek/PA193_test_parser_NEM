@@ -60,6 +60,9 @@
     <ClInclude Include="src\h\model\Mosaic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\h\utils\Keccak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

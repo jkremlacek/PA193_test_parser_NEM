@@ -7,6 +7,7 @@
 #include "Key.h"
 #include "Mosaic.h"
 #include <list>
+#include <iostream>
 
 #define NEM_NEMESIS_EPOCH 1427587585
 
@@ -52,6 +53,7 @@ public:
 	bool isMessagePayloadValid(string messagePayload);
 	bool isMessageTypeValid(int messageType);
 	bool isVersionValid(int version);
+	bool isSignatureValid(Signature signature);
 
 	bool setTimestamp(double timestamp);
 	time_t getTimestamp();
