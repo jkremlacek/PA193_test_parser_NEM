@@ -17,7 +17,6 @@ class Block: public Validatable
 private:
 	int version;
 	time_t timestamp;
-	Key harvesterKey;
 	Signature signature;
 	Hash prevBlockHash;
 	Key signer;

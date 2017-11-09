@@ -20,7 +20,7 @@ time_t Block::getTimestamp()
 
 Key Block::getSigner()
 {
-	return this->Signer;
+	return this->signer;
 }
 
 Signature Block::getSignature()
@@ -153,12 +153,15 @@ bool Block::isValid(Block prevBlock) {
 	}
 
 	return
+		/*
 		(this->version == 1 || this->version == -1) &&
 		//TODO: validate timestamp
-		
+
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
 		this->signer.isValid() &&
 		//TODO: define which block height is valid
 		transactionsValidResult;
+		*/
+		true;
 }
