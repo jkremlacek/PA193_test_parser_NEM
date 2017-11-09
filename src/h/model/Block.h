@@ -47,6 +47,7 @@ public:
 	bool setType(double type);
 	bool setHeight(double height);
 	void addTransaction(Transaction transaction);
+	void setSigner(Key key);
 
 	bool isValid() override;
 	bool isValid(Block prevBlock);

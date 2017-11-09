@@ -125,6 +125,11 @@ void Block::addTransaction(Transaction transaction)
 	this->transactions.push_back(transaction);
 }
 
+void Block::setSigner(Key key)
+{
+	this->signer = key;
+}
+
 bool Block::isValid() {
 	bool transactionsValidResult = true;
 
