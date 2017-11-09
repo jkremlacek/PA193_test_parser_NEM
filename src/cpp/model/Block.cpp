@@ -133,13 +133,11 @@ bool Block::isValid() {
 	}
 
 	return
-		//TODO: define which block versions are allowed
-		//this->version == 1 &&
-		//TODO: validate timestamp
+		(this->type == 1 || this->type == -1) &&
+		(this->version == 1744830465 || this->version == -1744830463) &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
 		this->signer.isValid() &&
-		//TODO: define which block height is valid
 		transactionsValidResult;
 }
 
@@ -152,12 +150,12 @@ bool Block::isValid(Block prevBlock) {
 	}
 
 	return
-		//TODO: define which block versions are allowed
-		//this->version == 1 &&
-		//TODO: validate timestamp
+		(this->type == 1 || this->type == -1) &&
+		(this->version == 1744830465 || this->version == -1744830463) &&
+		(this->timestamp > prevBlock.timestamp) &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
 		this->signer.isValid() &&
-		//TODO: define which block height is valid
+		(this->height > prevBlock.height) &&
 		transactionsValidResult;
 }

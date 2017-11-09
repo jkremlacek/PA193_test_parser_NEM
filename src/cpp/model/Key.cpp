@@ -12,6 +12,5 @@ Key::~Key()
 }
 
 bool Key::isValid() {
-	//TODO: implement validation
 	return true;
 }

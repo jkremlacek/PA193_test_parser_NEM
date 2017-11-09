@@ -12,6 +12,5 @@ Signature::~Signature()
 }
 
 bool Signature::isValid() {
-	//TODO: implement validation
 	return true;
 }
