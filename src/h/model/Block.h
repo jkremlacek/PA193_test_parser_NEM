@@ -17,7 +17,6 @@ class Block: public Validatable
 private:
 	int version;
 	time_t timestamp;
-	Key harvesterKey;
 	Signature signature;
 	Hash prevBlockHash;
 	Key signer;
@@ -29,16 +28,25 @@ public:
 	Block();
 	~Block();
 
+	int getVersion();
+	time_t getTimestamp();
+	Signature getSignature();
+	Hash getPrevBlockHash();
+	Key getSigner();
+	int getType();
+	int getHeight();
+	list<Transaction> getTransactions();
+
 	bool setVersion(double version);
 	bool setTimestamp(double timestamp);
-	void setHarversterKey(Key key);
 	void setSignature(Signature signature);
 	void setPrevBlockHash(Hash hash);
+	void setSigner(Key key);
 	bool setType(double type);
 	bool setHeight(double height);
 	void addTransaction(Transaction transaction);
-	void setSigner(Key key);
 
 	bool isValid() override;
+	bool isValid(Block prevBlock);
 };
 
