@@ -288,10 +288,10 @@ bool Transaction::isSignatureValid(Signature signature) {
 		throw runtime_error("Couldn't allocate memeory.");
 	}
 
-	hexencode(bytes_to_sign, bytes_to_sign_len, bytes_hex, bytes_to_sign_len * 2);
+	hexencode(bytes_to_sign, (size_t)bytes_to_sign_len, bytes_hex, (size_t)bytes_to_sign_len * 2);
 	bytes_hex[(size_t)bytes_to_sign_len * 2] = '\0';
 
-	cout << "Hex encoded:            " << bytes_hex << endl;
+	//cout << "Hex encoded:            " << bytes_hex << endl;
 
 	u8* hash_bytes = (u8*)malloc(32);
 	if (hash_bytes == NULL) {
@@ -308,14 +308,20 @@ bool Transaction::isSignatureValid(Signature signature) {
 	hexencode(hash_bytes, 32, hash_bytes_hex, 2 * 32);
 	hash_bytes_hex[2 * 32] = '\0';
 
-	cout << "Hashed and hex encoded: " << hash_bytes_hex << endl;
+	//cout << "Hashed and hex encoded: " << hash_bytes_hex << endl;
 
-	cout << "Original signature:     " << this->signature.getHash() << endl;
+	//cout << "Original signature:     " << this->signature.getHash() << endl;
 
 	free(bytes_to_sign);
 	free(bytes_hex);
 	free(hash_bytes);
 	free(hash_bytes_hex);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                                                                                                    //
+	//  The byte array hex encoded hash is unexpected; TODO: Reverse the bits in ints? Check Docs again.  //
+	//                                                                                                    //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return true;
 }
