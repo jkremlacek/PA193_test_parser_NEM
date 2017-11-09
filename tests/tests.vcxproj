@@ -93,12 +93,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="HashUnitTest.cpp" />
     <ClCompile Include="JsonAttributeUnitTest.cpp" />
     <ClCompile Include="JsonObjectUnitTest.cpp" />
     <ClCompile Include="JsonSerializerUnitTest.cpp" />
+    <ClCompile Include="KeyUnitTest.cpp" />
     <ClCompile Include="SafeConvertorUnitTest.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SignatureUnitTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

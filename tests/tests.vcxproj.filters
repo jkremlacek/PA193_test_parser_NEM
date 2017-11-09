@@ -56,5 +56,14 @@
     <ClCompile Include="TransactionUnitTest.cpp">
       <Filter>Source Files\tests\model</Filter>
     </ClCompile>
+    <ClCompile Include="HashUnitTest.cpp">
+      <Filter>Source Files\tests\model</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyUnitTest.cpp">
+      <Filter>Source Files\tests\model</Filter>
+    </ClCompile>
+    <ClCompile Include="SignatureUnitTest.cpp">
+      <Filter>Source Files\tests\model</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
