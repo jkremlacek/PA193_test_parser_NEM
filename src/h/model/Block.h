@@ -21,6 +21,7 @@ private:
 	Signature signature;
 	Hash prevBlockHash;
 	Hash generationHash;
+	Key signer;
 	int type;
 	int height;
 	std::list<Transaction> transactions;
@@ -38,6 +39,7 @@ public:
 	bool setType(double type);
 	bool setHeight(double height);
 	void addTransaction(Transaction transaction);
+	void setSigner(Key key);
 
 	bool isValid() override;
 };

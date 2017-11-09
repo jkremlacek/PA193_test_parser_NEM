@@ -168,6 +168,16 @@ Block JsonSerializer::loadBlock(JsonObject* root)
 		b.addTransaction(t);
 	}
 
+	b.setSigner(Key(root->getAttributeWithId("signer").getTextValue()));
+
+	if (!b.setVersion(root->getAttributeWithId("version").getNumValue())) {
+		throw runtime_error("Loading block version failed");
+	}
+
+	if (!b.setHeight(root->getAttributeWithId("height").getNumValue())) {
+		throw runtime_error("Loading block height failed");
+	}
+
 	return b;
 }
 
