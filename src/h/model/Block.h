@@ -20,7 +20,6 @@ private:
 	Key harvesterKey;
 	Signature signature;
 	Hash prevBlockHash;
-	Hash generationHash;
 	Key signer;
 	int type;
 	int height;
@@ -34,8 +33,7 @@ public:
 	bool setTimestamp(double timestamp);
 	void setHarversterKey(Key key);
 	void setSignature(Signature signature);
-	void setPrevBlockHash(Hash hash); 
-	void setGenerationHash(Hash hash);
+	void setPrevBlockHash(Hash hash);
 	bool setType(double type);
 	bool setHeight(double height);
 	void addTransaction(Transaction transaction);

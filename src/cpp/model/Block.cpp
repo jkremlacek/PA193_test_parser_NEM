@@ -51,11 +51,6 @@ void Block::setPrevBlockHash(Hash hash)
 	this->prevBlockHash = hash;
 }
 
-void Block::setGenerationHash(Hash hash)
-{
-	this->generationHash = hash;
-}
-
 bool Block::setType(double type)
 {
 	try
@@ -109,7 +104,6 @@ bool Block::isValid() {
 		this->harvesterKey.isValid() &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
-		this->generationHash.isValid() &&
 		//TODO: define which block height is valid
 		transactionsValidResult;
 }
