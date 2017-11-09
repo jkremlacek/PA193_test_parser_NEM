@@ -31,16 +31,15 @@ public:
 
 	int getVersion();
 	time_t getTimestamp();
-	Key getHarversterKey();
 	Signature getSignature();
 	Hash getPrevBlockHash();
+	Key getSigner();
 	int getType();
 	int getHeight();
 	list<Transaction> getTransactions();
 
 	bool setVersion(double version);
 	bool setTimestamp(double timestamp);
-	void setHarversterKey(Key key);
 	void setSignature(Signature signature);
 	void setPrevBlockHash(Hash hash);
 	bool setType(double type);

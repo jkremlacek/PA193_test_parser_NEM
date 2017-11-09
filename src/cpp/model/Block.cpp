@@ -18,9 +18,9 @@ time_t Block::getTimestamp()
 	return this->timestamp;
 }
 
-Key Block::getHarversterKey()
+Key Block::getSigner()
 {
-	return this->harvesterKey;
+	return this->Signer;
 }
 
 Signature Block::getSignature()
@@ -75,11 +75,6 @@ bool Block::setTimestamp(double timestamp)
 	}
 
 	return true;
-}
-
-void Block::setHarversterKey(Key key)
-{
-	this->harvesterKey = key;
 }
 
 void Block::setSignature(Signature signature)
@@ -142,9 +137,9 @@ bool Block::isValid() {
 		(this->version == 1 || this->version == -1) &&
 		//TODO: validate timestamp
 
-		this->harvesterKey.isValid() &&
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
+		this->signer.isValid() &&
 		//TODO: define which block height is valid
 		transactionsValidResult;
 }
@@ -160,9 +155,10 @@ bool Block::isValid(Block prevBlock) {
 	return
 		(this->version == 1 || this->version == -1) &&
 		//TODO: validate timestamp
-		this->harvesterKey.isValid() &&
+		
 		this->signature.isValid() &&
 		this->prevBlockHash.isValid() &&
+		this->signer.isValid() &&
 		//TODO: define which block height is valid
 		transactionsValidResult;
 }
