@@ -34,7 +34,6 @@ public:
 	Key getHarversterKey();
 	Signature getSignature();
 	Hash getPrevBlockHash();
-	void setSigner(Key key);
 	int getType();
 	int getHeight();
 	list<Transaction> getTransactions();
