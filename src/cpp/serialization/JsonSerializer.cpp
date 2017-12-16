@@ -305,7 +305,16 @@ pair<double, JsonObject*> JsonSerializer::createJsonObject()
 	double id = iteratorCounter;
 	iteratorCounter++;
 
-	JsonObject* jo = new JsonObject(id);
+	JsonObject* jo;
+
+	try
+	{
+		jo = new JsonObject(id);
+	}
+	catch (std::bad_alloc& exc)
+	{
+		throw new runtime_error("Could not allocate new JsonObject. Reason: " + string(exc.what()));
+	}
 
 	jsObjectStorage.insert(pair<double, JsonObject*>(id, jo));
 
