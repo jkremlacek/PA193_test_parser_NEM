@@ -72,6 +72,18 @@ namespace tests
 			Assert::AreEqual("testValue", jo->getAttributeWithId("testName").getTextValue().c_str());
 		}
 
+		TEST_METHOD(fromString_singleAttribute_escapedQuote_Test) {
+			string str = "{\"testName\":\"test\\\"Value\"}";
+
+			JsonSerializer jss = JsonSerializer();
+
+			JsonObject* jo = jss.fromString(str).second;
+
+			Assert::AreEqual(1, jo->getAttributeCount());
+			Assert::AreEqual("testName", jo->getAttributeWithId("testName").getName().c_str());
+			Assert::AreEqual("test\\\"Value", jo->getAttributeWithId("testName").getTextValue().c_str());
+		}
+
 		TEST_METHOD(fromString_twoAttributes_Test) {
 			string str = "{\"testName\":\"testValue\", \"testName2\":\"testValue2\"}";
 

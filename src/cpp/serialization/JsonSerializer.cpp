@@ -329,10 +329,30 @@ JsonAttribute JsonSerializer::getJsonStringAttribute(string & str, string name)
 	//note that str must start with the " symbol starting the attribute value
 	str.erase(0, 1);
 
-	int endPos = str.find_first_of("\"");
-	if (endPos == string::npos)
-	{
-		throw runtime_error("Invalid format, missing '\"', " + getErrorStrSegment(str));
+	int startPos = 0;
+	int endPos;
+
+	while (true) {
+		endPos = str.find_first_of('"', startPos);
+
+		if (endPos == string::npos)
+		{
+			throw runtime_error("Invalid format, missing '\"', " + getErrorStrSegment(str));
+		}
+
+		//skip escaped quotation mark
+		if (str.at(endPos - 1) != '\\')
+		{
+			break;
+		}
+		else {
+			startPos = endPos + 1;
+
+			if (startPos > str.length())
+			{
+				throw runtime_error("Invalid format, missing '\"', " + getErrorStrSegment(str));
+			}
+		}
 	}
 
 	JsonAttribute ja(STRING, name);
