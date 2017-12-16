@@ -274,6 +274,11 @@ string JsonSerializer::getJsonAttributeName(string & str)
 
 	removeWhitespacesFromBothSides(jsonAttributeName);
 
+	if (jsonAttributeName.at(0) != '\"' || jsonAttributeName.at(jsonAttributeName.length() - 1) != '\"' || jsonAttributeName.length() < 3)
+	{
+		throw runtime_error("Invalid format, attribute name must be non-empty and must be ended from both sides with \", instead got: " + jsonAttributeName);
+	}
+
 	jsonAttributeName.erase(0, 1);
 	jsonAttributeName.erase(jsonAttributeName.length() - 1, 1);
 
