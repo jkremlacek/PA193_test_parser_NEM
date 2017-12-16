@@ -46,7 +46,12 @@ void JsonAttribute::setNumValue(string numValue)
 		throw runtime_error("Invalid NUMBER value: " + numValue);
 	}
 
-	this->numValue = stod(numValue);
+	try {
+		this->numValue = stod(numValue);
+	}
+	catch (std::out_of_range& exc) {
+		throw runtime_error("Number out of double type range.");
+	}
 }
 
 double JsonAttribute::getNumValue()
